@@ -1,9 +1,9 @@
 # Gameshop database
 
 ### Authors
-Michał Wiktorowski
-Weronika Zmyślona
-Adam Wrzesiński
+Michał Wiktorowski <br>
+Weronika Zmyślona <br>
+Adam Wrzesiński <br>
 Szymon Malec
 
 ### Description
