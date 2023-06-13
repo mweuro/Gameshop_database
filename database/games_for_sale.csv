@@ -1,4 +1,4 @@
-game_id,names,description,min_players,max_players,avg_time,avg_rating,age,owned,category,price
+game_id,name,description,min_players,max_players,avg_time,avg_rating,age,availability,category,price
 174430,Gloomhaven,Vanquish monsters with strategic cardplay. Fulfill your quest to leave your legacy!,1,4,120,8.98893,12,25928,"Adventure, Exploration, Fantasy, Fighting, Miniatures",692.55
 161936,Pandemic Legacy: Season 1,Mutating diseases are spreading around the world - can your team save humanity?,2,4,60,8.6614,13,41605,"Environmental, Medical",270.35
 182028,Through the Ages: A New Story of Civilization,Rewrite history as you build up your civilization in this epic card drafting game!,2,4,240,8.60673,14,15848,"Card Game, Civilization, Economic",293.84
