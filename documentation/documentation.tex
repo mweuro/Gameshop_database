@@ -50,7 +50,18 @@
 	Pierwszą częścią projektu było wykonanie schematu bazy danych, a następnie wygenerowanie losowych danych. Uzyskane dane należało eksportować do bazy i umieścić na serwerze za pomocą MySQL. Kolejna część polegała na przeprowadzeniu analizy danych z wysymulowanego zbioru i~przedstawienie jej w formie raportu. Ponadto został opisany przebieg normalizacji bazy danych do postaci EKNF. 
 	
 	\section{Schemat bazy danych}
-	Opisać schemat i "tables preparation" z pliku connection.ipynb
+	Schemat bazy danych (Rysunek 1.) uwzględnia 8 tabel przechowujących nastepujące informacje:
+	\begin{itemize}
+		\setlength{\itemsep}{-2pt}
+		\item \textbf{cusomer} – dane dotyczące klientów sklepu,
+		\item \textbf{staff} – dane dotyczące pracowników sklepu,
+		\item \textbf{games\textunderscore for\textunderscore sale} – dane dotyczące gier dostępnych na sprzedaż,
+		\item \textbf{games\textunderscore to\textunderscore rent} – dane dotyczące gier dostępnych do wypożyczenia,
+		\item \textbf{sale} – dane na temat sprzedaży gier,
+		\item \textbf{rental} – dane na temat wypożyczeń gier,
+		\item \textbf{competition} – dane dotyczące organizownych turniejów,
+		\item \textbf{competition\textunderscore results} – dane dotyczące osiągnietych wyników przez uczestników turniejów.
+	\end{itemize}
 	
 	\begin{figure}[!h]
 		\centering
@@ -61,7 +72,7 @@
 
 	\section{Skryptowe wypełnienie bazy}
 	
-	Opis losowania danych do każdej tabeli + część "connection with the engine" z pliku connection.ipynb
+	W celu przygotowania do wypełnienia bazy losowo wygenerowanymi danymi, zostały stworzone pliki csv odpowiadające poszczególnym tabelom z bazy danych. Oprócz danych generowanych losowo, pojawiają się rownież dane rzeczywiste, co zostanie opisane w dalszej części tego rozdziału. Na sam koniec, po połączniu z serwerem, dane zostały zaimportowane do bazy.
 	
 	\subsection{Tabela customers}
 		Tabela customers zawiera informacje na temat 1329 klientów, które zorganizowane są w  5 następujących kolumnach:
@@ -87,9 +98,8 @@
 	
 		Każdy adres email składa się również z domeny, która była losowana z listy domen stworzonej na podstawie rankingu najpopularniejszych serwisów pocztowych w Polsce dostępnego na stronie \href{https://interaktywnie.com/biznes/artykuly/biznes/przeglad-ktora-poczta-e-mail-jest-najlepsza-16950}{interaktywnie.com}. Oczywiście, domeny były losowane z odpowiednim prawdopodobieństwem określonym według  liczby użytkowników korzystających z wybranych serwisów pocztowych.
 		
-		
 	\subsection{Tabela staff}
-		Tabela staff zawiera 6 kolumn z następującymi informacjami na temat 19 pracowników sklepu:
+		Tabela staff zawiera 6 kolumn z następującymi informacjami na temat 17 pracowników sklepu:
 		\begin{itemize}
 			\setlength{\itemsep}{-2pt}
 			\item \textbf{staff\textunderscore id} – zawiera unikalne id dla każdego pracownika,
@@ -115,6 +125,10 @@
 	\subsection{Tabela competition}
 	
 	\subsection{Tabela competition\textunderscore results}
+	
+	\subsection{Połączenie z bazą}
+	Tutaj opisać co dzieje się w pliku Connection.ipynb
+	
 	
 	
 	
