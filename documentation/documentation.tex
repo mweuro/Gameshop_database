@@ -119,8 +119,31 @@
 	\subsection{Tabela games\textunderscore to\textunderscore rent}
 	
 	\subsection{Tabela sale}
+		W tabeli znajduje się 6 kolumn:
+		\begin{itemize}
+			\setlength{\itemsep}{-2pt}
+			\item \textbf{sale\textunderscore id} – unikalne id dla każdej sprzedaży,
+			\item \textbf{customer\textunderscore id} – unikalne id klienta,
+			\item \textbf{staff\textunderscore id} – unikalne id pracownika,
+			\item \textbf{game\textunderscore id} – unikalne id gry,
+			\item \textbf{amount} – kwota transakcji,
+			\item \textbf{date} – data transakcji.
+		\end{itemize}
+
+		\noindent Dane w tabeli obejmują 117810 transakcji. Każda sprzedaż (wiersz w tabeli) była generowana w następujący sposób:
+		\begin{itemize}
+			\setlength{\itemsep}{-2pt}
+			\item customer\textunderscore id jest losowane z równym prawdopodobieństwem ze wszystkich dostępnych id klientów, a następnie z prawdopodobieństwem 0.83 zamieniane na NULL, co ma symulować klientów, którzy nie mają założonego konta w sklepie,
+			\item staff\textunderscore id jest losowane z równym prawdopodobieństwem ze wszystkich dostęnych id pracowników,
+			\item game\textunderscore id jest losowane z tabeli games\textunderscore for\textunderscore sale z prawdopodobieństwem proporcjonalnym do oceny gry (avg\textunderscore rating),
+			\item amount to wartość price z tabeli games\textunderscore for\textunderscore sale powiększona o losową wartość proporcjonalną do tego, jak dawno transakcja miała miejsce (gra mogła być kiedyś droższa),
+			\item date jest losowane spośród wszystkich dni pracujących od otwarcia sklepu do dziś z prawdopodobieństwem proporcjonalnym do czasu, jaki upłynął od otwarcia sklepu (sprzedaż rośnie wraz z czasem).
+		\end{itemize}
+
 	
 	\subsection{Tabela rental}
+        Tabela ta generowana jest podobnie do tabeli sale, z kilkoma różnicami. Jedną z nich jest to, że tutaj customer\textunderscore id już nie zawiera wartości NULL, ponieważ klient, by wypożyczyć grę, musi mieć założone konto. Nastepnie kolumna item\textunderscore id jest tworzona po wylosowaniu game\textunderscore id (ponownie opieramy się na avg\textunderscore rating) i dopasowaniu odpowiadającego mu item\textunderscore id. W przypadku kolumny return\textunderscore date losujemy czas wypożyczenia gry z rozkładu Poissona i dodajemy do rental\textunderscore date.
+
 	
 	\subsection{Tabela competition}
 	
