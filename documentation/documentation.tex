@@ -150,7 +150,41 @@
 	Lista plików i opis ich zawartości + kolejność i sposób urachamiania plików, aby uzyskać gotowy projekt
 	
 	\section{Baza w postaci EKNF}
-	Lista zależności funkcyjnych dla każdej relacji + uzasadnienie, że baza jest w EKNF
+	W tej części dokumentacji zawarto listę zależności funkcyjnych dla każdej relacji oraz uzasadnienie, że baza jest w EKNF.
+	
+	\paragraph{Tabela games\textunderscore for\textunderscore sale}\mbox{}\vspace{0.2cm} \\
+	Zależność funkcyjna: \textbraceleft game\textunderscore id, name, description\textbraceright \mbox{} \textrightarrow \mbox{} pozostałe kolumny \vspace{0.2cm} \\
+	\noindent Uzasadnieniem jest fakt, że game\textunderscore id jest kluczem głównym tabeli, a name i description są wartościami unikalnymi dla każdego game\textunderscore id, więc każda pozostała kolumna zależy funkcyjnie od zbioru tych trzech atrybutów. Jest to więc nietrywialna zależność funkcyjna, która zaczyna się od nadklucza, a więc nie zaburza to postaci EKNF bazy.
+
+	\paragraph{Tabela games\textunderscore to\textunderscore rent}\mbox{}\vspace{0.2cm} \\
+	Zależność funkcyjna: item\textunderscore id\mbox{} \textrightarrow \mbox{} game\textunderscore id \vspace{0.2cm} \\
+	\noindent Uzasadnieniem jest fakt, że item\textunderscore id jest kluczem głównym tabeli, więc game\textunderscore id zależy funkcyjnie od niego. Relacja ta nie zaburza postaci EKNF bazy, ponieważ tabela games\textunderscore to\textunderscore rent nie posiada żadnych niekluczowych zależności funkcyjnych.
+	
+	\paragraph{Tabela sale}\mbox{}\vspace{0.2cm} \\
+	Zależność funkcyjna: sale\textunderscore id\mbox{} \textrightarrow \mbox{} pozostałe kolumny \vspace{0.2cm} \\
+	\noindent Uzasadnieniem jest fakt, że sale\textunderscore id jest kluczem głównym tabeli, więc każda pozostała kolumna zależy funkcyjnie od niego. Relacja ta nie zaburza postaci EKNF bazy, ponieważ tabela games\textunderscore to\textunderscore rent nie posiada żadnych niekluczowych zależności funkcyjnych.
+	
+	\paragraph{Tabela rental}\mbox{}\vspace{0.2cm} \\
+	Zależność funkcyjna: rental\textunderscore id\mbox{} \textrightarrow \mbox{} pozostałe kolumny \vspace{0.2cm} \\
+	\noindent Uzasadnieniem jest fakt, że sale\textunderscore id jest kluczem głównym tabeli, więc każda pozostała kolumna zależy funkcyjnie od niego. Relacja ta nie zaburza postaci EKNF bazy, ponieważ tabela games\textunderscore to\textunderscore rent nie posiada żadnych niekluczowych zależności funkcyjnych.
+	
+	\paragraph{Tabela customers}\mbox{}\vspace{0.2cm} \\
+	Zależność funkcyjna: \textbraceleft customer\textunderscore id phone, email\textbraceright \mbox{} \textrightarrow \mbox{} pozostałe kolumny \vspace{0.2cm} \\
+	\noindent Uzasadnieniem jest fakt, że customer\textunderscore id jest kluczem głównym tabeli, a phone i email są wartościami unikalnymi dla każdego customer\textunderscore id, więc każda pozostała kolumna zależy funkcyjnie od zbioru tych trzech atrybutów. Jest to więc nietrywialna zależność funkcyjna, która zaczyna się od nadklucza, a~więc nie zaburza to postaci EKNF bazy.
+	
+	\paragraph{Tabela staff}\mbox{}\vspace{0.2cm} \\
+	Zależność funkcyjna: \textbraceleft staff\textunderscore id phone, email\textbraceright \mbox{} \textrightarrow \mbox{} pozostałe kolumny \vspace{0.2cm} \\
+	\noindent Uzasadnieniem jest fakt, że staff\textunderscore id jest kluczem głównym tabeli, a phone i email są wartościami unikalnymi dla każdego staff\textunderscore id, więc każda pozostała kolumna zależy funkcyjnie od zbioru tych trzech atrybutów. Jest to więc nietrywialna zależność funkcyjna, która zaczyna się od nadklucza, a~więc nie zaburza to postaci EKNF bazy.
+	
+	\paragraph{Tabela competition}\mbox{}\vspace{0.2cm} \\
+	Zależność funkcyjna: competition\textunderscore id\mbox{} \textrightarrow \mbox{} pozostałe kolumny \vspace{0.2cm} \\
+	\noindent Uzasadnieniem jest fakt, że competition\textunderscore id jest kluczem głównym tabeli, więc każda pozostała kolumna zależy funkcyjnie od niego. Relacja ta nie zaburza postaci EKNF bazy, ponieważ tabela games\textunderscore to\textunderscore rent nie posiada żadnych niekluczowych zależności funkcyjnych.
+	
+	\paragraph{Tabela competition\textunderscore results}\mbox{}\vspace{0.2cm} \\
+	Zależność funkcyjna: result\textunderscore id\mbox{} \textrightarrow \mbox{} pozostałe kolumny \vspace{0.2cm} \\
+	\noindent Uzasadnieniem jest fakt, że result\textunderscore id jest kluczem głównym tabeli, więc każda pozostała kolumna zależy funkcyjnie od niego. Relacja ta nie zaburza postaci EKNF bazy, ponieważ tabela games\textunderscore to\textunderscore rent nie posiada żadnych niekluczowych zależności funkcyjnych.\\
+	
+	Podsumowując, baza jest w EKNF, ponieważ każda z występujących w niej relacji nie zaprzecza tej postaci.
 	
 	\section{Podsumowanie}
 	M.in. co było najtrudniejsze podczas realizacji projektu
