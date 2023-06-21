@@ -9,13 +9,14 @@ fontsize: 12pt
 ---
 
 
-
-```{r, setup}
-install.packages('reticulate')
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE, eval = TRUE, fig.pos = "H", dev.args=list(encoding="CP1257.enc"))
 library(reticulate)
+use_python("C:\\Users\\szymo\\AppData\\Local\\Programs\\Python\\Python38\\python.exe")
 ```
 
 
+
 ```{python}
-print('aaa')
+print('aaaa kurw')
 ```
