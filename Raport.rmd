@@ -1,12 +1,18 @@
 ---
-title: "ADA"
-author: "Michał Wiktorowski, Szymon Malec, Weronika Zmyślona, Adam Wrzesiński"
+title: 
+author:
 output:
   pdf_document: 
     number_sections: true
     extra_dependencies: ["polski", "mathtools", "amsthm", "amssymb", "icomma", "upgreek", "xfrac", "scrextend", "float", "tabularx", "hyperref", "caption", "enumitem", "titlesec"]
 fontsize: 12pt
 ---
+
+
+\renewcommand{\figurename}{Wykres}
+\renewcommand{\tablename}{Tablica}
+\raggedbottom
+\titlelabel{\thetitle.\quad}
 
 
 ```{r setup, include=FALSE}
@@ -17,9 +23,128 @@ use_python(path)
 ```
 
 
-
 ```{python}
-print('aaaa kurw')
+from sqlalchemy import create_engine, MetaData, Table
+from sqlalchemy.orm import sessionmaker
+from urllib.parse import quote
+
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+import warnings
+warnings.filterwarnings('ignore')
+
+
+username = 'team25'
+password = quote('te@mzs')
+database = 'team25'
+host = 'giniewicz.it'
+port = '3306'
+
+engine = create_engine(f'mysql+pymysql://{username}:{password}@{host}:{port}/{database}')
+
+metadata = MetaData()
+games_for_sale = Table('games_for_sale', metadata, autoload_with = engine)
+games_to_rent = Table('games_to_rent', metadata, autoload_with = engine)
+customers = Table('customers', metadata, autoload_with = engine)
+staff = Table('staff', metadata, autoload_with = engine)
+sale = Table('sale', metadata, autoload_with = engine)
+rental = Table('rental', metadata, autoload_with = engine)
+competition = Table('competition', metadata, autoload_with = engine)
+competition_results = Table('competition_results', metadata, autoload_with = engine)
+
+connection = engine.connect()
 ```
 
 
+
+
+
+
+\title{ \Large \textsc{Bazy danych}
+		\\ [5.5cm]
+		\LARGE \textbf{\uppercase{Analiza danych i raport}}
+		%\\ [0.5cm]
+		%\normalsize \today \vspace*{20\baselineskip}
+		}
+	\date{}
+	\maketitle
+	\vspace{7cm}
+	
+\begin{center}
+\author{
+  Szymon Malec, 262276 \\
+  Adam Wrzesiński, 262317\\
+  Michał Wiktorowski, 262330 \\
+  Weronika Zmyślona, 262284 \\
+  \vspace{0.5cm}
+  Politechnika Wrocławska \\
+  Wydział Matematyki - Matematyka Stosowana}
+\end{center}
+
+\thispagestyle{empty}
+
+\newpage\thispagestyle{empty}
+\mbox{}
+
+\setcounter {page}{1}
+
+\tableofcontents
+
+\newpage
+
+
+
+
+
+\section{Wstęp}
+
+Raport pełni funkcję podsumowującą dane dostepne w bazie sklepu Geeks and Dragons za pomocą wizualizacji i podstawowych statystyk. W dalszej części znajdują się rozwiązania nastepujących problemów i pytań:
+\begin{itemize}
+  \item Ranking na pracownika miesiąca.
+  \item Ranking zawodników turniejowych.
+  \item Które gry przynoszą największy dochód ze sprzedaży, a które z wypożyczeń?
+  \item Które kategorie są najpopularniejsze?
+  \item Jak zmieniała się sprzedaż na przestrzeni lat?
+  \item Czy ocena gry i cena wpływają na sprzedaż?
+  \item Ile gier dostępne jest w sklepie?
+\end{itemize}
+
+
+
+
+\section{Ranking na pracownika miesiąca}
+
+
+
+\section{Ranking zawodników turniejowych}
+
+
+
+\section{Które gry przynoszą największy dochód ze sprzedaży, a które z wypożyczeń?}
+
+
+
+\section{Które kategorie są najpopularniejsze?}
+
+
+
+\section{Jak zmieniała się sprzedaż na przestrzeni lat?}
+
+
+
+\section{Czy ocena gry i cena wpływają na sprzedaż?}
+
+
+
+\section{Ile gier dostępne jest w sklepie?}
+
+
+
+
+
+```{python}
+connection.close()
+```
