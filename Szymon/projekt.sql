@@ -27,3 +27,16 @@ left join rental
 
 
 
+
+-- Zależność sprzedaży od ratingu gry
+
+select s.game_id, g.name, g.avg_rating, count(*) as sale_count
+from sale s
+join games_for_sale g
+  on s.game_id = g.game_id
+where s.date > date_add(sysdate(), interval -12 month)
+group by s.game_id, g.name, g.avg_rating
+order by sale_count desc;
+
+
+select max(avg_rating) from games_for_sale;
