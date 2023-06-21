@@ -5,6 +5,15 @@ import scipy.stats as sp
 from datetime import datetime, timedelta
 import random, string
 from unidecode import unidecode
+import math
+from random import randint
+from selenium import webdriver
+from selenium.webdriver.edge.service import Service
+from selenium.webdriver.edge.options import Options
+import json
+from bs4 import BeautifulSoup
+import requests
+import re
 
 
 
@@ -310,7 +319,133 @@ rental = rental.set_index('rental_id')
 
 rental.to_csv('../database/rental.csv')
 
-# ==========================================================================
 
 
 
+
+
+
+
+# =============================  MICHAŁ  =================================
+
+
+# Tabela GAMES_FOR_SALE
+
+
+# Wczytanie oryginalnej tabeli
+sale = pd.read_csv('data/boardgames.csv')
+
+
+# Dodanie kolumny 'description'
+"""Finds a description for each game in the dataset. Applies it to a dataframe."""
+def find_description(df):
+    url_list = df.bgg_url.values
+    descriptions = []
+    for url in url_list:
+        response = requests.get(url)
+        response.raise_for_status()
+        html_content = response.text
+        soup = BeautifulSoup(html_content, 'html.parser')
+        script_element = soup.find('script', type='application/ld+json').string
+        data = json.loads(script_element)
+        description = data.get('description')
+        descriptions.append(description)
+    df.insert(4, 'description', descriptions)
+    return df
+
+sale = find_description(sale)
+
+
+# Dodanie kolumny 'price'
+# UWAGA - ten krok długo się wykonuje
+"""Finds a price for each game in the dataset. Applies it to a dataframe."""
+def find_price(df):
+    url_list = df.bgg_url.values
+    prices = np.zeros(len(url_list))
+    
+    driver_path = r"C:\Users\20meh\EdgeWebDriver\msedgedriver.exe"
+    options = Options()
+    options.add_argument('--headless')
+    service = Service(driver_path)
+    for i in range(len(url_list)):
+        driver = webdriver.Edge(service=service, options=options)
+        driver.get(url_list[i])
+        html = driver.page_source
+        driver.quit()
+        soup = BeautifulSoup(html, 'html.parser')
+        try:
+            price_block = soup.find('li', class_ = 'summary-item summary-sale-item ng-scope')
+            price = price_block.find('strong', class_ = 'ng-binding').string.replace(',', '.')
+            price = float(re.findall(r"\d+\.\d+", price)[0])
+        except:
+            try:
+                price_block = soup.find_all('li', class_ = 'summary-item summary-sale-item ng-scope')[1]
+                price = price_block.find('strong', class_ = 'ng-binding').string.replace(',', '.')
+                price = float(re.findall(r"\d+\.\d+", price)[0])
+            except:
+                price = None
+        prices[i] = price
+    df_copy = df.copy()
+    df_copy['price'] = prices
+    return df_copy
+
+sale = find_price(sale)
+
+
+# Dodanie kolumny 'rent_price'
+price = sale.price.values
+rent_price = []
+for price in price:
+    if 0 <= price < 100:
+        p = 2
+    elif 100 <= price < 500:
+        p = 5
+    elif 500 <= price < 1000:
+        p = 10
+    elif 1000 <= price < 1500:
+        p = 15
+    else:
+        p = 20
+    rent_price.append(p)
+
+sale['rent_price'] = rent_price
+
+
+# Usunięcie zbędnych kolumn
+sale = sale[['game_id', 'names', 'description', 
+         'min_players', 'max_players', 'avg_time', 
+         'avg_rating', 'age', 'owned', 'category', 'price', 'rent_price']]
+
+
+
+# Zmiana nazw kolumn
+sale.rename(columns = {'names' : 'name', 'owned' : 'availability'}, inplace = True)
+
+
+# Zapisanie tabeli
+sale.to_csv('../database/games_for_sale.csv', index = False)
+
+
+
+# Tabela GAMES_TO_RENT
+
+
+# Wybranie potrzebnych kolumn z tabeli sale
+rent = sale[['game_id']]
+
+
+# Losowe generowanie ilości egzemplarzy
+"""Generates list of random integers (from 0 to 10), with advantage of zeros."""
+def games_count(n = np.shape(rent)[0]):
+    a = [randint(0, 10) for i in range(n)]
+    b = [0 if randint(0, len(a)) < 500 else i for i in a]
+    return b
+
+
+# Utworzenie tabeli
+rent = rent.loc[rent.index.repeat(games_count())].reset_index(drop = True)
+rent.insert(0, 'item_id', np.array([*range(len(rent))]) + 1)
+
+
+# Zapisanie tabeli
+rent.to_csv('../database/games_to_rent.csv', index = False)
