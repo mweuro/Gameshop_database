@@ -121,25 +121,41 @@ Dodatkowo raport ma postać uniwersalną, co oznacza, że przy odświeżeniu dos
 
 \section{Ranking na pracownika miesiąca}
 
+|       Ranking na pracownika miesiąca wyznaczony został na podstawie liczby sprzedanych przez pracownika egzemplarzy w danym miesiącu. Kwoty sprzedaży oraz wypożyczenia nie były brane pod uwagę. Poniżej możemy zobaczyć jak prezentował się ranking pracowników w każdym z ostatnich 6 miesięcy.
+
+W ostatnim miesiącu pierwsze miejsce w rankingu zajął/zajęła ...
+
 
 
 
 \section{Ranking zawodników turniejowych}
+
+|       Ranking zawodników turniejów organizowanych przez sklep wyznaczany jest na podstawie miejsc, które uczestnik zajął we wszystkich zawodach organizowanych do tej pory. Dla danego zawodnika brane są pod uwagę tylko miejsca na podium. 1. miejsce daje 3 punkty, 2. miejsce 2 punkty, natomiast 3. daje 1 punkt. Wynikiem, na bazie którego kształtuje się ranking, jest suma punktów uzyskanych ze wszystkich dotychczasowych turniejów.
 
 
 
 
 \section{Które gry przynoszą największy dochód ze sprzedaży, a które z wypożyczeń?}
 
+|       Na podstawie sumarycznych dochodów ze sprzedaży jakie wygenerowała każda gra w ostatnim miesiącu, został wyznaczony ranking najbardziej dochodowych gier.
+
+Podobnie tworzymy ranking dla dochodów z wypożyczeń.
+
 
 
 
 \section{Które kategorie są najpopularniejsze?}
 
+|       Aby odpowiedzić na to pytanie, zliczamy ile gier z danej kategorii sprzedało się od początku historii sklepu. Na tej podstawie tworzymy ranking kategorii, do której gry należące są najczęściej kupowane.
+
+To samo robimy, by wyznaczyć ranking najczęsciej wypożyczanych gier, z tym że tutaj zliczamy wypożyczenia.
+
 
 
 
 \section{Jak zmieniała się sprzedaż na przestrzeni lat?}
+
+|       Tak jak widać na wykresie poniżej.
 
 
 
