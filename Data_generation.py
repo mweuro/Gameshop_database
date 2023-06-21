@@ -363,7 +363,7 @@ def find_price(df):
     url_list = df.bgg_url.values
     prices = np.zeros(len(url_list))
     
-    driver_path = r"C:\Users\20meh\EdgeWebDriver\msedgedriver.exe"
+    driver_path = 'msedgedriver.exe'
     options = Options()
     options.add_argument('--headless')
     service = Service(driver_path)
