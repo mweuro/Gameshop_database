@@ -155,13 +155,23 @@
 	
 	
 	
-	\section{Analiza danych}
+	\section{Analiza danych i generowanie raportu}
 	
-	Opis jak została wykonana analiza danych, jakie pytania zostały postawione...
-	
-	\section{Generowanie raportu}
-	
-	W jaki sposób generowany jest raport...
+	Raport został napisany w języku R Markdown z wykorzystaniem Pythona. W pliku Raport.rmd znajduje się kod którego przekompilowanie zwraca plik pdf. Raport jest napisany tak by był uniwersalny i dostosowywał się do zmian w bazie danych. Plik rmd zawiera w sobie kod pythonowy, który w trakcie kompilacji pobiera z bazy dane i na ich podstawie tworzy wykresy i wylicza poszczególne statystyki.
+
+	Raport odpowiada na następujące pytania i zagadnienia:
+	\begin{itemize}
+		\item Ranking na pracownika miesiąca.
+		\item Ranking zawodników turniejowych.
+		\item Które gry przynoszą największy dochód ze sprzedaży, a które z wypożyczeń?
+		\item Które kategorie są najpopularniejsze?
+		\item Jak zmieniała się sprzedaż na przestrzeni lat?
+		\item Czy ocena gry i cena wpływają na sprzedaż?
+		\item Ile gier dostępne jest w sklepie?
+	\end{itemize}
+
+
+
 	
 	\section{Technologie}
 	
@@ -180,7 +190,7 @@
 	\end{itemize}
 	
 	
-	\noindent Aby uzyskać gotowy projekt należy w następującej kolejności uruchomić wynionione powyżej pliki:
+	\noindent Aby uzyskać gotowy projekt, należy najpierw utworzyć w folderze głównym plik tekstowy o nazwie python\textunderscore path.txt i wpisać w nim ściężkę do pythona na swoim komputerze. Następnie należy w następującej kolejności uruchomić wymionione powyżej pliki:
 	\begin{enumerate}
 		\setlength{\itemsep}{-2pt}
 		\item Data\textunderscore generation.py
