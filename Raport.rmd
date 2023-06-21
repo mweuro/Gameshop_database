@@ -1,0 +1,21 @@
+---
+title: "ADA"
+author: "Michał Wiktorowski, Szymon Malec, Weronika Zmyślona, Adam Wrzesiński"
+output:
+  pdf_document: 
+    number_sections: true
+    extra_dependencies: ["polski", "mathtools", "amsthm", "amssymb", "icomma", "upgreek", "xfrac", "scrextend", "float", "tabularx", "hyperref", "caption", "enumitem", "titlesec"]
+fontsize: 12pt
+---
+
+
+
+```{r, setup}
+install.packages('reticulate')
+library(reticulate)
+```
+
+
+```{python}
+print('aaa')
+```
