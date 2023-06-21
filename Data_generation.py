@@ -24,19 +24,19 @@ from unidecode import unidecode
 random.seed(123)
 n = 1329 #number of customers
 
-ln_F = pd.read_csv('Wera/last_names_F.csv', sep = ",")
+ln_F = pd.read_csv('data/last_names_F.csv', sep = ",")
 ln_F = ln_F.rename(columns={'Liczba': 'Number'}) # Actions taken to unify the structure of csv files
 ln_F = ln_F.rename(columns={'Nazwisko aktualne': 'Name'})
 
-ln_M = pd.read_csv('Wera/last_names_M.csv', sep = ",")
+ln_M = pd.read_csv('data/last_names_M.csv', sep = ",")
 ln_M = ln_M.rename(columns={'Liczba': 'Number'})
 ln_M = ln_M.rename(columns={'Nazwisko aktualne': 'Name'})
 
-fn_F = pd.read_csv('Wera/first_names_F.csv', sep = ",")
+fn_F = pd.read_csv('data/first_names_F.csv', sep = ",")
 fn_F = fn_F.rename(columns={'LICZBA WYSTĄPIENIEŃ': 'Number'})
 fn_F = fn_F.rename(columns={'IMIĘ PIERWSZE': 'Name'})
 
-fn_M = pd.read_csv('Wera/first_names_M.csv', sep = ",")
+fn_M = pd.read_csv('data/first_names_M.csv', sep = ",")
 fn_M = fn_M.rename(columns={'LICZBA WYSTĄPIEŃ': 'Number'})
 fn_M = fn_M.rename(columns={'IMIĘ PIERWSZE': 'Name'})
 
