@@ -170,7 +170,23 @@
 	
 	
 	\section{Zarządzanie plikami}
-	Lista plików i opis ich zawartości + kolejność i sposób urachamiania plików, aby uzyskać gotowy projekt
+	Cały proces generowania danych i łączenia z bazą oraz analizy i generowania raportu został tak zorganizowany w plikach, aby mógł być odtworzony w bardzo łatwy sposób. Poniżej przedstawiona jest lista plików wraz z opisem ich zawartości:
+	\begin{itemize}
+		\setlength{\itemsep}{-2pt}
+		\item \textbf{Data\textunderscore generation.py} – Plik generuje dane to tabel w pandas, które następnie zapisuje do plików csv w~folderze database.
+		\item \textbf{Connection.py} – Plik łączy się z bazą oraz wczytuje dane z~plików csv znajdujących się w~folderze database do tabel w pandas.
+		Następnie tabele te przesyła do bazy z~wykorzystaniem biblioteki SQLAlchemy.
+		\item \textbf{Raport.rmd} – Plik generuje raport z analizą danych.	
+	\end{itemize}
+	
+	
+	\noindent Aby uzyskać gotowy projekt należy w następującej kolejności uruchomić wynionione powyżej pliki:
+	\begin{enumerate}
+		\setlength{\itemsep}{-2pt}
+		\item Data\textunderscore generation.py
+		\item Connection.py
+		\item Raport.rmd
+	\end{enumerate}
 	
 	\section{Baza w postaci EKNF}
 	W tej części dokumentacji zawarto listę zależności funkcyjnych dla każdej relacji oraz uzasadnienie, że baza jest w EKNF.
@@ -210,6 +226,6 @@
 	Podsumowując, baza jest w EKNF, ponieważ każda z występujących w niej relacji nie zaprzecza tej postaci.
 	
 	\section{Podsumowanie}
-	M.in. co było najtrudniejsze podczas realizacji projektu
+	W dokumentacji został przedstawiony proces tworzenia bazy danych sklepu Geeks \& Dragons od momentu tworzenia schemtu bazy, aż po analizę wykonywaną na stworzonej bazie. Przebieg powstawania bazy został podzielowny na poszczególne etapy, co ułatwiło rodzielenie zadań pośród członków grupy zajmującej sie projektem. Najtrudniejszym zadaniem podczas realizacji projektu była przede wszystkim komunikacja z prowadzącą, która nie potrafiła przekazać informacji na temat terminu oddania projektu, wprowadzając studentów w błąd. Ostatecznie grupa projektowa jest bardzo zadowolona z~efektów końcowych i ma nadzieje na wysoką, w domyśle możliwie najwyższą, punktacje za wykonane zadanie.
 	
 \end{document}
