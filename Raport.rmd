@@ -206,7 +206,7 @@ plt.show()
 
 last_winner = df1['full_name'].values[-1]
 ```
-W ostatnim miesiącu pierwsze miejsce w rankingu zajął/zajęła `r I(py$last_winner)`
+W ostatnim miesiącu pierwsze miejsce w rankingu zajął/zajęła `r I(py$last_winner)`.
 
 
 
@@ -250,7 +250,7 @@ df2
 
 \section{Które gry przynoszą największy dochód ze sprzedaży, a które z wypożyczeń?}
 
-|       Na podstawie dziennych sumarycznych dochodów ze sprzedaży jakie wygenerowała każda gra, został wyznaczony ranking najbardziej dochodowych gier.
+|       Na podstawie dziennych sumarycznych dochodów ze sprzedaży jakie wygenerowała każda gra, został wyznaczony ranking najbardziej dochodowych gier. Rozważany horyzont czasowy wynosi 3 miesiące.
 
 ```{python best_games_sales, fig.cap="\\label{fig:best_games_sales} Najbardziej dochodowe gry ze sprzedaży.", fig.align="center", fig.width = 14, fig.height = 10}
 
@@ -312,7 +312,7 @@ plt.show()
 
 \section{Które kategorie są najpopularniejsze?}
 
-|       Aby odpowiedzić na to pytanie, zliczamy ile gier z danej kategorii sprzedało się od początku historii sklepu. Na tej podstawie tworzymy ranking kategorii, do której gry należące są najczęściej kupowane.
+|       Aby odpowiedzieć na to pytanie, zliczamy ile gier z danej kategorii sprzedało się od początku historii sklepu. Na tej podstawie tworzymy ranking kategorii, do której gry należące są najczęściej kupowane.
 
 ```{python categories_sales, fig.cap="\\label{fig:categories sales} Zestawienie najlepiej sprzedających się kategorii gier.", fig.align="center", fig.width = 10, fig.height = 8}
 
@@ -371,7 +371,7 @@ ctgr_rent
 
 \section{Jak zmieniała się sprzedaż na przestrzeni lat?}
 
-|       Tak jak widać na wykresie poniżej.
+|       W celu zobrazowania zmiany sprzedaży na przestrzeni lat prezentujemy wyniki w postaci wykresów. Przedstawiają one odpowiednio zmianę dziennego, oraz miesięcznego przychodu ze sprzedaży gier.
 
 ```{python sales, fig.cap="\\label{fig:sales} Dzienna i miesięczna analiza sprzedaży gier.", fig.align="center", fig.width = 8, fig.height = 5}
 
@@ -395,9 +395,9 @@ df5_month = df5_month.set_index('date')
 fig, ax = plt.subplots(2, 1, figsize = (20, 14))
 ax[0].plot(df5.index, df5.amount, color = 'firebrick')
 ax[1].plot(df5_month.index, df5_month.amount, color = 'firebrick')
-ax[0].set_ylabel('Daily income')
-ax[1].set_ylabel('Monthly income')
-ax[1].set_xlabel('Date')
+ax[0].set_ylabel('Dzienny przychód')
+ax[1].set_ylabel('Miesięczny przychód')
+ax[1].set_xlabel('Data')
 plt.show()
 ```
 
@@ -451,10 +451,10 @@ Współczynnik korelacji Pearsona wyniósł `r I(py$cor_pearson)`, natomiast wsp
 
 
 \section{Ile gier dostępne jest w sklepie?}
-Ostatnią rzeczą którą chcemy sprawdzić, jest podział gier na kategorie wiekowe i sprawdzenie liczności dla każdej z kategorii. Sugerowaliśmy się klasyfikacją gier PEGI, a kategorie są następujące:
+|       Ostatnią rzeczą którą chcemy sprawdzić, jest podział gier na kategorie wiekowe i sprawdzenie liczności dla każdej z kategorii. Sugerowaliśmy się klasyfikacją gier PEGI, a kategorie są następujące:
 
 \begin{itemize}
-\item \textbf{Everyone} - gry przeznaczone dla każdego
+\item \textbf{Dla każdego} - gry przeznaczone dla każdego
 \item \textbf{6+} - gry dla osób od 6 lat
 \item \textbf{12+} - gry dla osób od 12 lat
 \item \textbf{16+} - gry dla osób od 16 lat
@@ -473,7 +473,7 @@ GROUP BY age
 df6 = query_to_df(sql)
 df6 = df6.set_index('age')
 
-pegi = pd.DataFrame(index = ['Everyone', '6+', '12+', '16+', '18+'],
+pegi = pd.DataFrame(index = ['Dla każdego', '6+', '12+', '16+', '18+'],
                     data = [sum(df6[df6.index < 6].values),
                      sum(df6.loc[(df6.index >= 6) & (df6.index < 12)].values),
                      sum(df6.loc[(df6.index >= 12) & (df6.index < 16)].values),
@@ -486,7 +486,7 @@ plt.style.use('bmh')
 fig, ax = plt.subplots(figsize = (12, 6))
 ax.bar(pegi.index, pegi['Number of games'], color = ['lightgreen', 'lightgreen', 'gold', 'gold' , 'orangered'])
 ax.set_xticklabels(pegi.index)
-ax.set_ylabel('Number of games')
+ax.set_ylabel('Liczba gier')
 ax.bar_label(ax.containers[0], fmt= '%i', label_type='edge')
 plt.show()
 ```
