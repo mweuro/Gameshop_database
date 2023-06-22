@@ -85,7 +85,7 @@
 			\item \textbf{email} – adres email klienta.
 		\end{itemize}
 		
-		\noindent Dane w tabeli zostały wygenerowane w sposób losowy. Wartości w tabeli \textbf{cusomer\textunderscore id} wygenerowane zostały na pomocą odpowiedniego przedziału  dodatnich liczb całkowitych. Imiona i nazwiska klientów zostały wylosowane z odpowiednim prawdopodobieństwem korzystając z danych zamieszczonych na stronie \href{https://stat.gov.pl/}{Głównego Urzędu Statystycznego}. W pierwszej kolejności został wygenerowany wektor określający płeć klienta, z odpowiednim prawdopodobieństwem występowania danej płci, na podstawie liczby ludności we Wrocławiu z podziałem na mężczyzn i kobiety. Następnie w zależności od płci zostały przypisane imiona i nazwiska z odpowiednich tabeli danych pobranych ze wspomnianej strony internetowej.\\
+		\noindent Dane w tabeli zostały wygenerowane w sposób losowy. Wartości w tabeli cusomer\textunderscore id wygenerowane zostały na pomocą odpowiedniego przedziału  dodatnich liczb całkowitych. Imiona i nazwiska klientów zostały wylosowane z odpowiednim prawdopodobieństwem korzystając z danych zamieszczonych na stronie \href{https://stat.gov.pl/}{Głównego Urzędu Statystycznego}. W pierwszej kolejności został wygenerowany wektor określający płeć klienta, z odpowiednim prawdopodobieństwem występowania danej płci, na podstawie liczby ludności we Wrocławiu z podziałem na mężczyzn i kobiety. Następnie w zależności od płci zostały przypisane imiona i nazwiska z odpowiednich tabeli danych pobranych ze wspomnianej strony internetowej.\\
 		
 		\noindent Następna kolumna zawiera losowo generowane numery kontaktowe klientów. Numer w każdym przypadku składa się z połączenia losowo wybieranego wyróżnika sieci telefonicznej (2 cyfry) oraz liczby z przedziału (1000000, 9000000). Lista dostępnych wyróżników została stworzona na podstawie informacji dostępnych na stronie \href{https://pl.wikipedia.org/wiki/Numery_telefoniczne_w_Polsce}{Wikipedii}. W~ten sposób uzyskaliśmy indywidualny 9-cyfrowy numer dla każdego klienta.\\
 		
@@ -133,8 +133,8 @@
 	\end{itemize}
 	
 	\noindent Dane pochodzą z forum i sklepu internetowego boardgamegeek.com, natomiast zostały one pobrane ze strony https://www.kaggle.com/datasets/mrpantherson/board-game-data.
-	Główną zmianą w oryginalnym zbiorze danych było usunięcie kolumn z danymi, których nie planowaliśmy brać pod uwagę. Ponadto rozszerzyliśmy ją o trzy dodatowe informacje: opis gry (\textbf{description}), cenę (\textbf{price}), oraz koszt wypożyczenia (\textbf{rent\textunderscore price}). \\ \\
-	W celu wyciągnięcia informacji o cenie i opisie gry, zdecydowaliśmy się zbadać kod źródłowy każdej strony (kolumna \textbf{bgg\textunderscore url} z oryginalnej tabeli). Do tego zadania wykorzystaliśmy trzy bardzo istotne biblioteki: \textbf{requests}, \textbf{BeautifulSoup}, oraz \textbf{Selenium}, które dokładniej opisujemy w sekcji Technologie. Natomiast koszt wypożyczenia został wygenerowany następująco: grą których cena znajduje się w określonym zakresie, przypisujemy odpowiednią cenę wypożyczenia:
+	Główną zmianą w oryginalnym zbiorze danych było usunięcie kolumn z danymi, których nie planowaliśmy brać pod uwagę. Ponadto rozszerzyliśmy ją o trzy dodatowe informacje: opis gry (description), cenę (price), oraz koszt wypożyczenia (rent\textunderscore price). \\ \\
+	W celu wyciągnięcia informacji o cenie i opisie gry, zdecydowaliśmy się zbadać kod źródłowy każdej strony (kolumna bgg\textunderscore url z oryginalnej tabeli). Do tego zadania wykorzystaliśmy trzy bardzo istotne biblioteki: requests, BeautifulSoup, oraz Selenium, które dokładniej opisujemy w sekcji Technologie. Natomiast koszt wypożyczenia został wygenerowany następująco: grą których cena znajduje się w określonym zakresie, przypisujemy odpowiednią cenę wypożyczenia:
 	
 	\begin{center}\centering
 		\begin{tabular}{|c|c|c|}
@@ -157,7 +157,7 @@
 	
 	
 	\subsection{Tabela games\textunderscore to\textunderscore rent}
-	Tabela gier do wypożycznia powstaje na podstawie tabeli games\textunderscore for\textunderscore sale wybieramy z niej jedynie kolumnę \textbf{games\textunderscore id}, a następnie dla każdego identyfikatora (czyli dla każdego tytułu gry) losujemy liczbę z przedziału [0, 10] (z pewną ustaloną przewagą zer). Wylosowana liczba będzie liczbą egzemplarzy przeznaczonych do wypożyczenia. Duplikujemy każdy wiersz o wylosowany numer i każdemu egzemplarzowi przypisujemy unikatowy identyfikator. Umieszczamy je w kolumnie \textbf{item\textunderscore id}.
+	Tabela gier do wypożycznia powstaje na podstawie tabeli games\textunderscore for\textunderscore sale wybieramy z niej jedynie kolumnę games\textunderscore id, a następnie dla każdego identyfikatora (czyli dla każdego tytułu gry) losujemy liczbę z przedziału [0, 10] (z pewną ustaloną przewagą zer). Wylosowana liczba będzie liczbą egzemplarzy przeznaczonych do wypożyczenia. Duplikujemy każdy wiersz o wylosowany numer i każdemu egzemplarzowi przypisujemy unikatowy identyfikator. Umieszczamy je w kolumnie item\textunderscore id.
 	
 	\subsection{Tabela sale}
 		W tabeli znajduje się 6 kolumn:
@@ -217,8 +217,17 @@
 
 	
 	\section{Technologie}
-	
-	Korzystanie z bibliotek pandas, sqlalchemy itp...
+	Poniżej znajduję się spis technologii wykorzystywanych podczas pracy nad projektem, których użycie było wspominane w niniejszej dokumenatcji.
+	\begin{itemize}
+		\setlength{\itemsep}{-2pt}
+		\item MariaDB
+		\item Python
+		\item SQLAlchemy
+		\item Selenium
+		\item BeautifulSoup
+		\item RMarkdown
+		\item Reticulate
+	\end{itemize}
 	
 	
 	
