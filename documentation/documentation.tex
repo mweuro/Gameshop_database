@@ -47,7 +47,7 @@
 	\section{Wstęp}
 	Niniejsza dokumentacja przedstawia proces tworzenia bazy danych sklepu Geeks \& Dragons w ramach projektu na zaliczenie z kursu Bazy Danych z 2023 roku. Zadanie polegało na wysymulowaniu danych, jakie mogłyby się pojawić w bazie przykładowego sklepu, mającego w ofercie gry nieelektroniczne, który dodatkowo prowadzi wypożyczalnię gier oraz organizuje turnieje. Projekt został wykonany z~wykorzystaniem języka programownaia Python.\\
 	
-	\noindent Pierwszą częścią projektu było wykonanie schematu bazy danych, a następnie wygenerowanie losowych danych. Uzyskane dane należało eksportować do bazy i umieścić na serwerze za pomocą MySQL. Kolejna część polegała na przeprowadzeniu analizy danych z wysymulowanego zbioru i~przedstawienie jej w formie raportu. Ponadto został opisany przebieg normalizacji bazy danych do postaci EKNF. 
+	\noindent Pierwszą częścią projektu było wykonanie schematu bazy danych, a następnie wygenerowanie losowych danych. Uzyskane dane należało eksportować do bazy i umieścić na serwerze za pomocą biblioteki SQLAlchemy. Kolejna część polegała na przeprowadzeniu analizy danych z wysymulowanego zbioru i~przedstawienie jej w formie raportu. Ponadto został opisany przebieg normalizacji bazy danych do postaci EKNF. 
 	
 	\section{Schemat bazy danych}
 	Schemat bazy danych (Rysunek 1.) uwzględnia 8 tabel przechowujących nastepujące informacje:
@@ -132,9 +132,9 @@
 		\item \textbf{rent\textunderscore price} - cena za wypożyczenie (dzienna)
 	\end{itemize}
 	
-	\noindent Dane pochodzą z forum i sklepu internetowego boardgamegeek.com, natomiast zostały one pobrane ze strony https://www.kaggle.com/datasets/mrpantherson/board-game-data.
+	\noindent Dane pochodzą z forum i sklepu internetowego boardgamegeek.com, natomiast zostały one pobrane ze strony \href{https://www.kaggle.com/datasets/mrpantherson/board-game-data}{Kaggle}.
 	Główną zmianą w oryginalnym zbiorze danych było usunięcie kolumn z danymi, których nie planowaliśmy brać pod uwagę. Ponadto rozszerzyliśmy ją o trzy dodatowe informacje: opis gry (description), cenę (price), oraz koszt wypożyczenia (rent\textunderscore price). \\ \\
-	W celu wyciągnięcia informacji o cenie i opisie gry, zdecydowaliśmy się zbadać kod źródłowy każdej strony (kolumna bgg\textunderscore url z oryginalnej tabeli). Do tego zadania wykorzystaliśmy trzy bardzo istotne biblioteki: requests, BeautifulSoup, oraz Selenium, które dokładniej opisujemy w sekcji Technologie. Natomiast koszt wypożyczenia został wygenerowany następująco: grą których cena znajduje się w określonym zakresie, przypisujemy odpowiednią cenę wypożyczenia:
+	W celu wyciągnięcia informacji o cenie i opisie gry, zdecydowaliśmy się zbadać kod źródłowy każdej strony (kolumna bgg\textunderscore url z oryginalnej tabeli). Do tego zadania wykorzystaliśmy trzy bardzo istotne biblioteki: requests, BeautifulSoup, oraz Selenium, które dokładniej opisujemy w sekcji Technologie. Natomiast koszt wypożyczenia został wygenerowany następująco: grą których cena znajduje się w~określonym zakresie, przypisujemy odpowiednią cenę wypożyczenia:
 	
 	\begin{center}\centering
 		\begin{tabular}{|c|c|c|}
@@ -164,9 +164,9 @@
 		\begin{itemize}
 			\setlength{\itemsep}{-2pt}
 			\item \textbf{sale\textunderscore id} – unikalne id dla każdej sprzedaży,
-			\item \textbf{customer\textunderscore id} – unikalne id klienta,
-			\item \textbf{staff\textunderscore id} – unikalne id pracownika,
-			\item \textbf{game\textunderscore id} – unikalne id gry,
+			\item \textbf{customer\textunderscore id} – id klienta,
+			\item \textbf{staff\textunderscore id} – id pracownika,
+			\item \textbf{game\textunderscore id} – id gry,
 			\item \textbf{amount} – kwota transakcji,
 			\item \textbf{date} – data transakcji.
 		\end{itemize}
@@ -199,7 +199,7 @@
 			\item \textbf{prize} – pula nagród.
 		\end{itemize}
 
-	Turnieje rozgrywane są co piątek z wyłączeniem dni ustawowo wolnych od pracy oraz Wielkiego Piątku. Aby wziąć udział w turnieju, gracz musi posiadać konto. Spośród stałych klientów losujemy trzydziestu graczy. Jako prowadzący przypisany jest losowo wybrany pracownik wypożyczalni. Losowa jest także nagroda za dany turniej. Nie w każdym wydarzeniu biorą udział wszyscy zadeklarowani. Graczy nie może być mniej niż minimalna oraz nie może przekraczać trzykrotności maksymalnej ilości graczy dla danej gry. Gry turniejowe wybierane są losowo spośród dwudziestu najlepiej ocenianych gier, a daty przypisywane są na cały rok kalendarzowy.
+	\noindent Turnieje rozgrywane są co piątek z wyłączeniem dni ustawowo wolnych od pracy oraz Wielkiego Piątku. Aby wziąć udział w turnieju, gracz musi posiadać konto. Spośród stałych klientów losujemy trzydziestu graczy. Jako prowadzący przypisany jest losowo wybrany pracownik wypożyczalni. Losowa jest także nagroda za dany turniej. Nie w każdym wydarzeniu biorą udział wszyscy zadeklarowani. Graczy nie może być mniej niż minimalna oraz nie może przekraczać trzykrotności maksymalnej ilości graczy dla danej gry. Gry turniejowe wybierane są losowo spośród dwudziestu najlepiej ocenianych gier, a daty przypisywane są na cały rok kalendarzowy.
 	
 	\subsection{Tabela competition\textunderscore results}
 
@@ -241,16 +241,16 @@
 
 	
 	\section{Technologie}
-	Poniżej znajduję się spis technologii wykorzystywanych podczas pracy nad projektem, których użycie było wspominane w niniejszej dokumenatcji.
+	Poniżej znajduję się spis technologii wykorzystywanych podczas pracy nad projektem, których użycie było wspominane w niniejszej dokumenatcji. Dla każdej pozycji jest dołączony link do dokumnetacji.
 	\begin{itemize}
 		\setlength{\itemsep}{-2pt}
-		\item MariaDB
-		\item Python
-		\item SQLAlchemy
-		\item Selenium
-		\item BeautifulSoup
-		\item RMarkdown
-		\item Reticulate
+		\item MariaDB (\href{https://mariadb.com/kb/en/}{dokumntacja})
+		\item Python (\href{https://www.python.org/doc/}{dokumntacja})
+		\item SQLAlchemy (\href{https://www.sqlalchemy.org/}{dokumntacja})
+		\item Selenium (\href{https://selenium-python.readthedocs.io/?fbclid=IwAR3mhY42CU1bHhruIm0kzWo9hTZjRoGbooMU2BGEkrFJWPC9i9e93pRitqY}{dokumntacja})
+		\item BeautifulSoup (\href{https://beautiful-soup-4.readthedocs.io/en/latest/}{dokumntacja})
+		\item RMarkdown (\href{https://www.rdocumentation.org/packages/rmarkdown/versions/2.22}{dokumntacja})
+		\item Reticulate (\href{https://rstudio.github.io/reticulate/}{dokumntacja})
 	\end{itemize}
 	
 	
