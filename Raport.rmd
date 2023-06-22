@@ -264,7 +264,33 @@ ctgr_rent
 
 |       Tak jak widać na wykresie poniżej.
 
+```{python sales, fig.cap="\\label{fig:sales} Dzienna i miesięczna analiza sprzedaży gier.", fig.align="center", fig.width = 8, fig.height = 5}
 
+sql = """
+SELECT SUM(amount) as amount, date, YEAR(date) AS year, MONTH(date) AS month
+FROM games_for_sale
+JOIN sale
+USING (game_id)
+GROUP BY date"""
+df5 = query_to_df(sql)
+df5 = df5.set_index('date')
+
+sql2 = """SELECT SUM(amount) as amount, date, YEAR(date) AS year, MONTH(date) AS month
+FROM games_for_sale
+JOIN sale
+USING (game_id)
+GROUP BY year, month"""
+df5_month = query_to_df(sql2)
+df5_month = df5_month.set_index('date')
+
+fig, ax = plt.subplots(2, 1, figsize = (20, 14))
+ax[0].plot(df5.index, df5.amount, color = 'firebrick')
+ax[1].plot(df5_month.index, df5_month.amount, color = 'firebrick')
+ax[0].set_ylabel('Daily income')
+ax[1].set_ylabel('Monthly income')
+ax[1].set_xlabel('Date')
+plt.show()
+```
 
 
 \section{Czy ocena gry i cena wpływają na sprzedaż?}
