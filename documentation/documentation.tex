@@ -191,8 +191,10 @@
 	\subsection{Tabela competition\textunderscore results}
 	
 	\subsection{Połączenie z bazą}
-	Tutaj opisać co dzieje się w pliku Connection.ipynb
+	Za połączenie z bazą oraz wypełnienie jej wygenerownymi danymi odpowiada plik Connection.py. Przesłanie danych do bazy możliwe jest dzięki bibliotece SQLAlchemy, która napisana jest w języku programowania Python i służy do pracy z bazami danych oraz mapowania obiektowo-relacyjnego.\\
 	
+	
+	\noindent W pierwszej kolejności tworzymy obiekt Base, za pomocą funkcji declarative\textunderscore base(), który jest klasą bazową. Następnie, dla każdej z tabel bazy, tworzymy klasą dziedziczącą z klasy podstawowej Base. W następnym kroku, za pomocą funkcji create\textunderscore engine(), zapisujemy do zmiennej engine połączenie z~konkretną bazą. Dalej z wywołaniem funkcji Base.metadata.create\textunderscore all(engine) generowane są puste tabele bazy danych. Na sam koniec, z racji zapisywania generowanych danych losowych do tabel z~wykorzystaniem biblioteki pandas, ponownie jest ona wykorzystywana i za pomocą funkcji to\textunderscore sql() tabele wypelniane są odpowiednimi danymi.
 	
 	
 	
