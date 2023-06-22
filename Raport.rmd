@@ -252,7 +252,7 @@ df2 = df2.astype({"Punkty": int})
 
 \section{Które gry przynoszą największy dochód ze sprzedaży, a które z wypożyczeń?}
 
-|       Na podstawie dziennych sumarycznych dochodów ze sprzedaży jakie wygenerowała każda gra, został wyznaczony ranking najbardziej dochodowych gier. Rozważany horyzont czasowy wynosi 3 miesiące.
+|       Na podstawie sumarycznych przychodów ze sprzedaży każdej gry, zwizualizowaliśmy ich zmianę w czasie. Rozważany horyzont czasowy wynosi 3 miesiące.
 
 ```{python best_games_sales, fig.cap="\\label{fig:best_games_sales} Najbardziej dochodowe gry ze sprzedaży.", fig.align="center", fig.width = 14, fig.height = 10}
 
@@ -279,7 +279,7 @@ ax.legend()
 plt.show()
 ```
 
-Podobnie tworzymy ranking dla dochodów z wypożyczeń.
+Analogicznie postępujemy w przypadku wypożyczeń.
 
 ```{python best_games_rent, fig.cap="\\label{fig:best_games_rent} Najbardziej dochodowe gry z wypożyczeń.", fig.align="center", fig.width = 14, fig.height = 10}
 
