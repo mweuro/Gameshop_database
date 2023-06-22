@@ -240,10 +240,10 @@ staff.to_csv('database/staff.csv', index=False)
 # TABELA GAMES_FOR_SALE
 
 # Wczytanie tabeli boardgames2
-sale = pd.read_csv('data/boardgames.csv')
+games_for_sale = pd.read_csv('data/boardgames.csv')
 
 # Dodanie kolumny 'rent_price'
-price = sale.price.values
+price = games_for_sale.price.values
 rent_price = []
 for price in price:
     if 0 <= price < 100:
@@ -258,18 +258,18 @@ for price in price:
         p = 20
     rent_price.append(p)
 
-sale['rent_price'] = rent_price
+games_for_sale['rent_price'] = rent_price
 
 # Usunięcie zbędnych kolumn
-sale = sale[['game_id', 'names', 'description', 
+games_for_sale = games_for_sale[['game_id', 'names', 'description', 
          'min_players', 'max_players', 'avg_time', 
          'avg_rating', 'age', 'owned', 'category', 'price', 'rent_price']]
 
 # Zmiana nazw kolumn
-sale.rename(columns = {'names' : 'name', 'owned' : 'availability'}, inplace = True)
+games_for_sale.rename(columns = {'names' : 'name', 'owned' : 'availability'}, inplace = True)
 
 # Zapisanie tabeli
-sale.to_csv('database/games_for_sale.csv', index = False)
+games_for_sale.to_csv('database/games_for_sale.csv', index = False)
 
 
 
@@ -278,11 +278,11 @@ sale.to_csv('database/games_for_sale.csv', index = False)
 # TABELA GAMES_TO_RENT
 
 # Wybranie potrzebnych kolumn z tabeli sale
-rent = sale[['game_id']]
+games_to_rent = games_for_sale[['game_id']]
 
 
 # Losowe generowanie ilości egzemplarzy
-def games_count(n = np.shape(rent)[0]):
+def games_count(n = np.shape(games_to_rent)[0]):
     """
     A function generates list of random integers (from 0 to 10), with advantage of zeros.
     
@@ -298,11 +298,11 @@ def games_count(n = np.shape(rent)[0]):
 
 
 # Utworzenie tabeli
-rent = rent.loc[rent.index.repeat(games_count())].reset_index(drop = True)
-rent.insert(0, 'item_id', np.array([*range(len(rent))]) + 1)
+games_to_rent = games_to_rent.loc[games_to_rent.index.repeat(games_count())].reset_index(drop = True)
+games_to_rent.insert(0, 'item_id', np.array([*range(len(games_to_rent))]) + 1)
 
 # Zapisanie tabeli
-rent.to_csv('database/games_to_rent.csv', index = False)
+games_to_rent.to_csv('database/games_to_rent.csv', index = False)
 
 
 
@@ -313,10 +313,15 @@ rent.to_csv('database/games_to_rent.csv', index = False)
 
 # =============================  SZYMON  =================================
 
-customer_df = pd.read_csv('database/customer.csv', index_col='customer_id')
-staff_df = pd.read_csv('database/staff.csv', index_col='staff_id')
-games_df = pd.read_csv('database/games_for_sale.csv', index_col='game_id')
-items_df = pd.read_csv('database/games_to_rent.csv', index_col='item_id')
+#customer_df = pd.read_csv('database/customer.csv', index_col='customer_id')
+#staff_df = pd.read_csv('database/staff.csv', index_col='staff_id')
+#games_df = pd.read_csv('database/games_for_sale.csv', index_col='game_id')
+#items_df = pd.read_csv('database/games_to_rent.csv', index_col='item_id')
+
+customer_df = customer
+staff_df = staff
+games_df = games_for_sale
+items_df = games_to_rent
 
 dates_df = pd.read_csv('data/dates.csv')
 dates = np.array(dates_df.date)
@@ -479,7 +484,7 @@ def get_fridays_in_a_month(year: int, month: int, max_days: int):
     Fridays = []
 
     while 1:     
-        day = datetime.date(year, month, count) 
+        day = datetime(year, month, count).date()
 
         if day.weekday() == 4:
             break
@@ -487,8 +492,8 @@ def get_fridays_in_a_month(year: int, month: int, max_days: int):
         else:
             count += 1
 
-    for day in range(count, max_days+1, 7):
-        Fridays.append( str(datetime.date(year, month, day)) )
+    for day_ in range(count, max_days+1, 7):
+        Fridays.append( str(datetime(year, month, day_).date()) )
 
     return Fridays
 
@@ -532,7 +537,7 @@ def get_days_for_competition(year: int, abort = True):
         Aborted = ["01-01", "01-06", "05-01", "05-03", "15-08",
                    "11-01", "11-11", "12-24", "12-25", "12-26"]
         
-        easter_friday = easter(year) + datetime.timedelta(days=-2)
+        easter_friday = easter(year) + timedelta(days=-2)
         Aborted.append( easter_friday )
         
     else:
@@ -585,7 +590,7 @@ Staff_ids = list(staff.staff_id)
 Customer_ids = np.random.choice(customer.customer_id, size = number_of_active_players)
 
 start_date = '2021-06-01'
-today_date = str(datetime.date.today())
+today_date = str(datetime.today())
 
 today_year = int(today_date[:4])
 Games = get_games(games_for_sale) 
