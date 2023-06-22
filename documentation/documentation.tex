@@ -47,7 +47,7 @@
 	\section{Wstęp}
 	Niniejsza dokumentacja przedstawia proces tworzenia bazy danych sklepu Geeks \& Dragons w ramach projektu na zaliczenie z kursu Bazy Danych z 2023 roku. Zadanie polegało na wysymulowaniu danych, jakie mogłyby się pojawić w bazie przykładowego sklepu, mającego w ofercie gry nieelektroniczne, który dodatkowo prowadzi wypożyczalnię gier oraz organizuje turnieje. Projekt został wykonany z~wykorzystaniem języka programownaia Python.\\
 	
-	Pierwszą częścią projektu było wykonanie schematu bazy danych, a następnie wygenerowanie losowych danych. Uzyskane dane należało eksportować do bazy i umieścić na serwerze za pomocą MySQL. Kolejna część polegała na przeprowadzeniu analizy danych z wysymulowanego zbioru i~przedstawienie jej w formie raportu. Ponadto został opisany przebieg normalizacji bazy danych do postaci EKNF. 
+	\noindent Pierwszą częścią projektu było wykonanie schematu bazy danych, a następnie wygenerowanie losowych danych. Uzyskane dane należało eksportować do bazy i umieścić na serwerze za pomocą MySQL. Kolejna część polegała na przeprowadzeniu analizy danych z wysymulowanego zbioru i~przedstawienie jej w formie raportu. Ponadto został opisany przebieg normalizacji bazy danych do postaci EKNF. 
 	
 	\section{Schemat bazy danych}
 	Schemat bazy danych (Rysunek 1.) uwzględnia 8 tabel przechowujących nastepujące informacje:
@@ -85,18 +85,18 @@
 			\item \textbf{email} – adres email klienta.
 		\end{itemize}
 		
-		Dane w tabeli zostały wygenerowane w sposób losowy. Wartości w tabeli \textbf{cusomer\textunderscore id} wygenerowane zostały na pomocą odpowiedniego przedziału  dodatnich liczb całkowitych. Imiona i nazwiska klientów zostały wylosowane z odpowiednim prawdopodobieństwem korzystając z danych zamieszczonych na stronie \href{https://stat.gov.pl/}{Głównego Urzędu Statystycznego}. W pierwszej kolejności został wygenerowany wektor określający płeć klienta, z odpowiednim prawdopodobieństwem występowania danej płci, na podstawie liczby ludności we Wrocławiu z podziałem na mężczyzn i kobiety. Następnie w zależności od płci zostały przypisane imiona i nazwiska z odpowiednich tabeli danych pobranych ze wspomnianej strony internetowej.\\
+		\noindent Dane w tabeli zostały wygenerowane w sposób losowy. Wartości w tabeli \textbf{cusomer\textunderscore id} wygenerowane zostały na pomocą odpowiedniego przedziału  dodatnich liczb całkowitych. Imiona i nazwiska klientów zostały wylosowane z odpowiednim prawdopodobieństwem korzystając z danych zamieszczonych na stronie \href{https://stat.gov.pl/}{Głównego Urzędu Statystycznego}. W pierwszej kolejności został wygenerowany wektor określający płeć klienta, z odpowiednim prawdopodobieństwem występowania danej płci, na podstawie liczby ludności we Wrocławiu z podziałem na mężczyzn i kobiety. Następnie w zależności od płci zostały przypisane imiona i nazwiska z odpowiednich tabeli danych pobranych ze wspomnianej strony internetowej.\\
 		
-		Następna kolumna zawiera losowo generowane numery kontaktowe klientów. Numer w każdym przypadku składa się z połączenia losowo wybieranego wyróżnika sieci telefonicznej (2 cyfry) oraz liczby z przedziału (1000000, 9000000). Lista dostępnych wyróżników została stworzona na podstawie informacji dostępnych na stronie \href{https://pl.wikipedia.org/wiki/Numery_telefoniczne_w_Polsce}{Wikipedii}. W~ten sposób uzyskaliśmy indywidualny 9-cyfrowy numer dla każdego klienta.\\
+		\noindent Następna kolumna zawiera losowo generowane numery kontaktowe klientów. Numer w każdym przypadku składa się z połączenia losowo wybieranego wyróżnika sieci telefonicznej (2 cyfry) oraz liczby z przedziału (1000000, 9000000). Lista dostępnych wyróżników została stworzona na podstawie informacji dostępnych na stronie \href{https://pl.wikipedia.org/wiki/Numery_telefoniczne_w_Polsce}{Wikipedii}. W~ten sposób uzyskaliśmy indywidualny 9-cyfrowy numer dla każdego klienta.\\
 		
-		Ostatnia kolumna zawiera adresy email, dla których identyfikatory użytkownika są generowane losowo na podstawie imion i nazwisk klientów. Identyfikatory adresów email składają się przykładowo:
+		\noindent Ostatnia kolumna zawiera adresy email, dla których identyfikatory użytkownika są generowane losowo na podstawie imion i nazwisk klientów. Identyfikatory adresów email składają się przykładowo:
 		\begin{itemize}
 			\setlength{\itemsep}{-2pt}
 			\item z połączenia imienia i nazwiska lub części nazwiska klienta,
 			\item z połączenia imienia lub nazwiska i losowej liczby z przedziału (100, 10000).
 		\end{itemize}
 	
-		Każdy adres email składa się również z domeny, która była losowana z listy domen stworzonej na podstawie rankingu najpopularniejszych serwisów pocztowych w Polsce dostępnego na stronie \href{https://interaktywnie.com/biznes/artykuly/biznes/przeglad-ktora-poczta-e-mail-jest-najlepsza-16950}{interaktywnie.com}. Oczywiście, domeny były losowane z odpowiednim prawdopodobieństwem określonym według  liczby użytkowników korzystających z wybranych serwisów pocztowych.
+		\noindent Każdy adres email składa się również z domeny, która była losowana z listy domen stworzonej na podstawie rankingu najpopularniejszych serwisów pocztowych w Polsce dostępnego na stronie \href{https://interaktywnie.com/biznes/artykuly/biznes/przeglad-ktora-poczta-e-mail-jest-najlepsza-16950}{interaktywnie.com}. Oczywiście, domeny były losowane z odpowiednim prawdopodobieństwem określonym według  liczby użytkowników korzystających z wybranych serwisów pocztowych.
 		
 	\subsection{Tabela staff}
 		Tabela staff zawiera 6 kolumn z następującymi informacjami na temat 17 pracowników sklepu:
@@ -110,9 +110,9 @@
 			\item \textbf{salary} – miesięczne wynagrodzenie pracownika (cena brutto).
 		\end{itemize}
 	
-		Dane w pierwszych 4 kolumnach zostały wygenerowane w sposób analogiczny jak w przypadku tabeli customers. Nastąpiła zmiana w generowaniu adresów email dla pracowników. Są one tworzone w jednakowy sposób dla każdego pracownika – składają się z połączenia imienia i nazwiska za pomocą kropki oraz odrębnej domeny firmy @dragons.com.\\
+		\noindent Dane w pierwszych 4 kolumnach zostały wygenerowane w sposób analogiczny jak w przypadku tabeli customers. Nastąpiła zmiana w generowaniu adresów email dla pracowników. Są one tworzone w~jednakowy sposób dla każdego pracownika – składają się z połączenia imienia i nazwiska za pomocą kropki oraz odrębnej domeny firmy @dragons.com.\\
 		
-		Ostatnia kolumna określa miesięczne wynagrodzenie pracownika, które były losowane z listy konkretnych pensji [4310, 5140, 6530, 7280, 8320], które zostały wybrane na podstawie możliwych zarobków na stanowiskach dotyczących obsługi klienta. Losowanie odbyło się z ustalonym prawdopodobieństwem, zakładającym, że doświadczonych pracowników o większych zarobkach jest mniej.
+		\noindent Ostatnia kolumna określa miesięczne wynagrodzenie pracownika, które były losowane z listy konkretnych pensji [4310, 5140, 6530, 7280, 8320], które zostały wybrane na podstawie możliwych zarobków na stanowiskach dotyczących obsługi klienta. Losowanie odbyło się z ustalonym prawdopodobieństwem, zakładającym, że doświadczonych pracowników o większych zarobkach jest mniej.
 		
 	\subsection{Tabela games\textunderscore for\textunderscore sale}
 	
@@ -130,7 +130,7 @@
 			\item \textbf{date} – data transakcji.
 		\end{itemize}
 
-		\noindent Dane w tabeli obejmują 117810 transakcji. Każda sprzedaż (wiersz w tabeli) była generowana w następujący sposób:
+		\noindent Dane w tabeli obejmują 117810 transakcji. Każda sprzedaż (wiersz w tabeli) była generowana w~następujący sposób:
 		\begin{itemize}
 			\setlength{\itemsep}{-2pt}
 			\item customer\textunderscore id jest losowane z równym prawdopodobieństwem ze wszystkich dostępnych id klientów, a następnie z prawdopodobieństwem 0.83 zamieniane na NULL, co ma symulować klientów, którzy nie mają założonego konta w sklepie,
@@ -157,9 +157,9 @@
 	
 	\section{Analiza danych i generowanie raportu}
 	
-	Raport został napisany w języku R Markdown z wykorzystaniem Pythona. W pliku Raport.rmd znajduje się kod którego przekompilowanie zwraca plik pdf. Raport jest napisany tak by był uniwersalny i dostosowywał się do zmian w bazie danych. Plik rmd zawiera w sobie kod pythonowy, który w trakcie kompilacji pobiera z bazy dane i na ich podstawie tworzy wykresy i wylicza poszczególne statystyki.
+	Raport został napisany w języku R Markdown z wykorzystaniem Pythona. W pliku Raport.rmd znajduje się kod którego przekompilowanie zwraca plik pdf. Raport jest napisany tak by był uniwersalny i~dostosowywał się do zmian w bazie danych. Plik rmd zawiera w sobie kod pythonowy, który w trakcie kompilacji pobiera z bazy dane i na ich podstawie tworzy wykresy i wylicza poszczególne statystyki.\\
 
-	Raport odpowiada na następujące pytania i zagadnienia:
+	\noindent Raport odpowiada na następujące pytania i zagadnienia:
 	\begin{itemize}
 		\item Ranking na pracownika miesiąca.
 		\item Ranking zawodników turniejowych.
@@ -190,7 +190,7 @@
 	\end{itemize}
 	
 	
-	\noindent Aby uzyskać gotowy projekt, należy najpierw utworzyć w folderze głównym plik tekstowy o nazwie python\textunderscore path.txt i wpisać w nim ściężkę do pythona na swoim komputerze. Następnie należy w następującej kolejności uruchomić wymionione powyżej pliki:
+	\noindent Aby uzyskać gotowy projekt, należy najpierw utworzyć w folderze głównym plik tekstowy o nazwie python\textunderscore path.txt i wpisać w nim ściężkę do pythona na swoim komputerze. Następnie należy w~następującej kolejności uruchomić wymionione powyżej pliki:
 	\begin{enumerate}
 		\setlength{\itemsep}{-2pt}
 		\item Data\textunderscore generation.py
@@ -233,9 +233,9 @@
 	Zależność funkcyjna: result\textunderscore id\mbox{} \textrightarrow \mbox{} pozostałe kolumny \vspace{0.2cm} \\
 	\noindent Uzasadnieniem jest fakt, że result\textunderscore id jest kluczem głównym tabeli, więc każda pozostała kolumna zależy funkcyjnie od niego. Relacja ta nie zaburza postaci EKNF bazy, ponieważ tabela games\textunderscore to\textunderscore rent nie posiada żadnych niekluczowych zależności funkcyjnych.\\
 	
-	Podsumowując, baza jest w EKNF, ponieważ każda z występujących w niej relacji nie zaprzecza tej postaci.
+	\noindent Podsumowując, baza jest w EKNF, ponieważ każda z występujących w niej relacji nie zaprzecza tej postaci.
 	
 	\section{Podsumowanie}
-	W dokumentacji został przedstawiony proces tworzenia bazy danych sklepu Geeks \& Dragons od momentu tworzenia schemtu bazy, aż po analizę wykonywaną na stworzonej bazie. Przebieg powstawania bazy został podzielowny na poszczególne etapy, co ułatwiło rodzielenie zadań pośród członków grupy zajmującej sie projektem. Najtrudniejszym zadaniem podczas realizacji projektu była przede wszystkim komunikacja z prowadzącą, która nie potrafiła przekazać informacji na temat terminu oddania projektu, wprowadzając studentów w błąd. Ostatecznie grupa projektowa jest bardzo zadowolona z~efektów końcowych i ma nadzieje na wysoką, w domyśle możliwie najwyższą, punktacje za wykonane zadanie.
+	W dokumentacji został przedstawiony proces tworzenia bazy danych sklepu Geeks \& Dragons od momentu tworzenia schemtu bazy, aż po analizę wykonywaną na stworzonej bazie. Przebieg powstawania bazy został podzielowny na poszczególne etapy, co ułatwiło rodzielenie zadań pośród członków grupy zajmującej sie projektem. Najtrudniejszym zadaniem podczas realizacji projektu było przede wszystkim zrozumienie i uzasadnienie, że stworzona baza jest w  postaci EKNF. Ostatecznie grupa projektowa jest bardzo zadowolona z~efektów końcowych i ma nadzieje na wysoką, w domyśle możliwie najwyższą, punktacje za wykonane zadanie.
 	
 \end{document}
