@@ -132,7 +132,7 @@
 		\item \textbf{rent\textunderscore price} - cena za wypożyczenie (dzienna)
 	\end{itemize}
 	
-	\noindent Dane pochodzą z forum i sklepu internetowego boardgamegeek.com, natomiast zostały one pobrane ze strony \href{https://www.kaggle.com/datasets/mrpantherson/board-game-data}{Kaggle}.
+	\noindent Dane pochodzą z forum i sklepu internetowego \href{boardgamegeek.com}{boardgamegeek.com}, natomiast zostały one pobrane ze strony \href{https://www.kaggle.com/datasets/mrpantherson/board-game-data}{Kaggle}.
 	Główną zmianą w oryginalnym zbiorze danych było usunięcie kolumn z danymi, których nie planowaliśmy brać pod uwagę. Ponadto rozszerzyliśmy ją o trzy dodatowe informacje: opis gry (description), cenę (price), oraz koszt wypożyczenia (rent\textunderscore price). \\ \\
 	W celu wyciągnięcia informacji o cenie i opisie gry, zdecydowaliśmy się zbadać kod źródłowy każdej strony (kolumna bgg\textunderscore url z oryginalnej tabeli). Do tego zadania wykorzystaliśmy trzy bardzo istotne biblioteki: requests, BeautifulSoup, oraz Selenium, które dokładniej opisujemy w sekcji Technologie. Natomiast koszt wypożyczenia został wygenerowany następująco: grą których cena znajduje się w~określonym zakresie, przypisujemy odpowiednią cenę wypożyczenia:
 	
