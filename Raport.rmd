@@ -111,7 +111,7 @@ def query_to_df(sql):
 
 \section{Wstęp}
 
-|       Raport pełni funkcję podsumowującą dane dostepne w bazie sklepu Geeks and Dragons za pomocą wizualizacji i podstawowych statystyk. W dalszej części znajdują się rozwiązania nastepujących problemów i pytań:
+|       Raport pełni funkcję podsumowującą dane dostepne w bazie sklepu Geeks and Dragons za pomocą wizualizacji i podstawowych statystyk. W dalszej części znajdują się rozwiązania nastepujących zagadnień i pytań:
 \begin{itemize}
   \item Ranking na pracownika miesiąca.
   \item Ranking zawodników turniejowych.
