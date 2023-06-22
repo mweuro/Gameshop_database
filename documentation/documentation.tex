@@ -115,8 +115,49 @@
 		\noindent Ostatnia kolumna określa miesięczne wynagrodzenie pracownika, które były losowane z listy konkretnych pensji [4310, 5140, 6530, 7280, 8320], które zostały wybrane na podstawie możliwych zarobków na stanowiskach dotyczących obsługi klienta. Losowanie odbyło się z ustalonym prawdopodobieństwem, zakładającym, że doświadczonych pracowników o większych zarobkach jest mniej.
 		
 	\subsection{Tabela games\textunderscore for\textunderscore sale}
+	Tabela \textbf{games\textunderscore for\textunderscore rent} zawiera podstawowe informacje dotyczące 3723 unikatowych gier nieelektronicznych. Są to kolejno:
+	\begin{itemize}
+		\setlength{\itemsep}{-2pt}
+		\item \textbf{game\textunderscore id} - unikatowy identyfikator gry
+		\item \textbf{name} - tytuł gry
+		\item \textbf{description} - krótki opis gry
+		\item \textbf{min\textunderscore players} - minimalna liczba graczy
+		\item \textbf{max\textunderscore players} - maksymalna liczba graczy
+		\item \textbf{avg\textunderscore time} - średni czas trwania rozgrywki
+		\item  \textbf{avg\textunderscore rating} - średnia ocena gry
+		\item \textbf{age} - minimalne ograniczenie wiekowe
+		\item \textbf{availability} - ilość egzemplarzy dostępnych do sprzedaży
+		\item  \textbf{category} - kategorie, do których zalicza się dana gra (może być więcej niż jedna kategoria)
+		\item \textbf{price} - aktualna cena gry
+		\item \textbf{rent\textunderscore price} - cena za wypożyczenie (dzienna)
+	\end{itemize}
+	
+	\noindent Dane pochodzą z forum i sklepu internetowego boardgamegeek.com, natomiast zostały one pobrane ze strony https://www.kaggle.com/datasets/mrpantherson/board-game-data.
+	Główną zmianą w oryginalnym zbiorze danych było usunięcie kolumn z danymi, których nie planowaliśmy brać pod uwagę. Ponadto rozszerzyliśmy ją o trzy dodatowe informacje: opis gry (\textbf{description}), cenę (\textbf{price}), oraz koszt wypożyczenia (\textbf{rent\textunderscore price}). \\ \\
+	W celu wyciągnięcia informacji o cenie i opisie gry, zdecydowaliśmy się zbadać kod źródłowy każdej strony (kolumna \textbf{bgg\textunderscore url} z oryginalnej tabeli). Do tego zadania wykorzystaliśmy trzy bardzo istotne biblioteki: \textbf{requests}, \textbf{BeautifulSoup}, oraz \textbf{Selenium}, które dokładniej opisujemy w sekcji Technologie. Natomiast koszt wypożyczenia został wygenerowany następująco: grą których cena znajduje się w określonym zakresie, przypisujemy odpowiednią cenę wypożyczenia:
+	
+	\begin{center}\centering
+		\begin{tabular}{|c|c|c|}
+			\hline
+			\textbf{Cena produktu} & \textbf{Cena wypożyczenia}\\
+			\hline
+			$[0, 100)$ & $2$\\
+			\hline
+			$[100, 500)$ & $5$\\
+			\hline
+			$[500, 1000)$ & $10$\\
+			\hline
+			$[1000, 1500)$ & $15$\\
+			\hline
+			$>1500$ & $20$\\
+			\hline
+		\end{tabular}
+	\end{center}
+	
+	
 	
 	\subsection{Tabela games\textunderscore to\textunderscore rent}
+	Tabela gier do wypożycznia powstaje na podstawie tabeli games\textunderscore for\textunderscore sale wybieramy z niej jedynie kolumnę \textbf{games\textunderscore id}, a następnie dla każdego identyfikatora (czyli dla każdego tytułu gry) losujemy liczbę z przedziału [0, 10] (z pewną ustaloną przewagą zer). Wylosowana liczba będzie liczbą egzemplarzy przeznaczonych do wypożyczenia. Duplikujemy każdy wiersz o wylosowany numer i każdemu egzemplarzowi przypisujemy unikatowy identyfikator. Umieszczamy je w kolumnie \textbf{item\textunderscore id}.
 	
 	\subsection{Tabela sale}
 		W tabeli znajduje się 6 kolumn:
