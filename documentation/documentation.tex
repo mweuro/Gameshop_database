@@ -187,9 +187,33 @@
 
 	
 	\subsection{Tabela competition}
+
+	Przechowuje ona ogólne informacje dotyczące turniejów. Zawiera 5 kolumn:
+		
+		\begin{itemize}
+			\setlength{\itemsep}{-2pt}
+			\item \textbf{competition\textunderscore id} – unikalne id dla każdego turnieju,
+			\item \textbf{staff\textunderscore id} –  id prowadzącego turniej,
+			\item \textbf{game\textunderscore id} – id gry turniejowej,
+			\item \textbf{date} – data rozegrania turnieju,
+			\item \textbf{prize} – pula nagród.
+		\end{itemize}
+
+	Turnieje rozgrywane są co piątek z wyłączeniem dni ustawowo wolnych od pracy oraz Wielkiego Piątku. Aby wziąć udział w turnieju, gracz musi posiadać konto. Spośród stałych klientów losujemy trzydziestu graczy. Jako prowadzący przypisany jest losowo wybrany pracownik wypożyczalni. Losowa jest także nagroda za dany turniej. Nie w każdym wydarzeniu biorą udział wszyscy zadeklarowani. Graczy nie może być mniej niż minimalna oraz nie może przekraczać trzykrotności maksymalnej ilości graczy dla danej gry. Gry turniejowe wybierane są losowo spośród dwudziestu najlepiej ocenianych gier, a daty przypisywane są na cały rok kalendarzowy.
 	
 	\subsection{Tabela competition\textunderscore results}
-	
+
+	Tabela ta zawiera szczegółowe informacje dotyczące wyników w turnieju każdego uczestnika . Zawiera 4 kolumny:
+
+		\begin{itemize}
+			\setlength{\itemsep}{-2pt}
+			\item \textbf{competition\textunderscore id} – id turnieju,
+			\item \textbf{customer\textunderscore id} – id ,
+			\item \textbf{place} – miejsce w turnieju,
+			\item \textbf{result\textunderscore id} – unikalne id wyniku,
+		\end{itemize}
+	Miejsca zajmowane przez uczestników są losowe. 
+
 	\subsection{Połączenie z bazą}
 	Za połączenie z bazą oraz wypełnienie jej wygenerownymi danymi odpowiada plik Connection.py. Przesłanie danych do bazy możliwe jest dzięki bibliotece SQLAlchemy, która napisana jest w języku programowania Python i służy do pracy z bazami danych oraz mapowania obiektowo-relacyjnego.\\
 	
