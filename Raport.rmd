@@ -179,19 +179,19 @@ ax[2, 1].barh(df6['full_name'], df6['count'], color = ['skyblue', 'skyblue', 'si
 
 ax[0, 0].bar_label(ax[0, 0].containers[0], fmt= '%i', label_type='edge')
 ax[0, 0].tick_params(axis='y', direction='in',pad=-15)
-ax[0, 0].set_yticklabels(df6['full_name'], horizontalalignment = "left")
+ax[0, 0].set_yticklabels(df1['full_name'], horizontalalignment = "left")
 ax[1, 0].bar_label(ax[1, 0].containers[0], fmt= '%i', label_type='edge')
 ax[1, 0].tick_params(axis='y', direction='in',pad=-15)
-ax[1, 0].set_yticklabels(df6['full_name'], horizontalalignment = "left")
+ax[1, 0].set_yticklabels(df2['full_name'], horizontalalignment = "left")
 ax[2, 0].bar_label(ax[2, 0].containers[0], fmt= '%i', label_type='edge')
 ax[2, 0].tick_params(axis='y', direction='in',pad=-15)
-ax[2, 0].set_yticklabels(df6['full_name'], horizontalalignment = "left")
+ax[2, 0].set_yticklabels(df3['full_name'], horizontalalignment = "left")
 ax[0, 1].bar_label(ax[0, 1].containers[0], fmt= '%i', label_type='edge')
 ax[0, 1].tick_params(axis='y', direction='in',pad=-15)
-ax[0, 1].set_yticklabels(df6['full_name'], horizontalalignment = "left")
+ax[0, 1].set_yticklabels(df4['full_name'], horizontalalignment = "left")
 ax[1, 1].bar_label(ax[1, 1].containers[0], fmt= '%i', label_type='edge')
 ax[1, 1].tick_params(axis='y', direction='in',pad=-15)
-ax[1, 1].set_yticklabels(df6['full_name'], horizontalalignment = "left")
+ax[1, 1].set_yticklabels(df5['full_name'], horizontalalignment = "left")
 ax[2, 1].bar_label(ax[2, 1].containers[0], fmt= '%i', label_type='edge')
 ax[2, 1].tick_params(axis='y', direction='in',pad=-15)
 ax[2, 1].set_yticklabels(df6['full_name'], horizontalalignment = "left")
@@ -203,8 +203,10 @@ ax[0, 1].set_title(month_names[df4.month.values[0]] + ' ' + str(df4.year.values[
 ax[1, 1].set_title(month_names[df5.month.values[0]] + ' ' + str(df5.year.values[0]), size = 10)
 ax[2, 1].set_title(month_names[df6.month.values[0]] + ' ' + str(df6.year.values[0]), size = 10)
 plt.show()
+
+last_winner = df1['full_name'].values[-1]
 ```
-W ostatnim miesiącu pierwsze miejsce w rankingu zajął/zajęła ...
+W ostatnim miesiącu pierwsze miejsce w rankingu zajął/zajęła `r I(py$last_winner)`
 
 
 
@@ -212,6 +214,36 @@ W ostatnim miesiącu pierwsze miejsce w rankingu zajął/zajęła ...
 \section{Ranking zawodników turniejowych}
 
 |       Ranking zawodników turniejów organizowanych przez sklep wyznaczany jest na podstawie miejsc, które uczestnik zajął we wszystkich zawodach organizowanych do tej pory. Dla danego zawodnika brane są pod uwagę tylko miejsca na podium. 1. miejsce daje 3 punkty, 2. miejsce 2 punkty, natomiast 3. daje 1 punkt. Wynikiem, na bazie którego kształtuje się ranking, jest suma punktów uzyskanych ze wszystkich dotychczasowych turniejów.
+
+```{python}
+sql = """
+SELECT CONCAT(first_name, ' ', last_name) AS full_name,
+        SUM(4 - place) AS points
+FROM competition_results
+JOIN customers 
+USING (customer_id)
+WHERE place <= 3
+GROUP BY full_name
+ORDER BY points DESC"""
+
+df2 = query_to_df(sql)
+df2 = df2.set_index('full_name')
+df2.insert(1, 'place', [(i + 1) for i in range(np.shape(df2)[0])])
+d = df2['points'].value_counts()
+dups = d.where(d > 1).dropna().index.values
+for dup in dups:
+    df2['place'].mask(df2['points'] == dup, df2[df2['points'] == dup].place.values.min(), inplace = True)
+places = np.array(df2.place.values)
+unq = np.unique(places)
+new_places = np.array([i + 1 for i in range(len(unq))])
+replace_dict = dict(zip(unq, new_places))
+for key, value in replace_dict.items():
+    places[places == key] = value
+df2['place'] = places
+
+df2 = df2[df2.place <= 10]
+df2
+```
 
 
 
@@ -225,7 +257,8 @@ W ostatnim miesiącu pierwsze miejsce w rankingu zajął/zajęła ...
 sql = """SELECT name, amount, date
 FROM games_for_sale
 JOIN sale
-USING (game_id)"""
+USING (game_id)
+WHERE MONTH(date) >= 3 AND YEAR(date) = 2023"""
 
 df3_sale = query_to_df(sql)
 
@@ -253,7 +286,8 @@ FROM games_to_rent
 JOIN games_for_sale
 USING (game_id)
 JOIN rental
-USING (item_id)"""
+USING (item_id)
+WHERE MONTH(rental_date) >= 3 AND YEAR(rental_date) = 2023"""
 
 df3_rent = query_to_df(sql)
 
@@ -326,7 +360,8 @@ FROM games_for_sale
 JOIN games_to_rent
 USING (game_id)
 JOIN rental
-USING (item_id)"""
+USING (item_id)
+"""
 
 df4_rent = query_to_df(sql)
 ctgr_rent = best_categories(df4_rent)
