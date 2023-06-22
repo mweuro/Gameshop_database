@@ -111,7 +111,7 @@ def query_to_df(sql):
 
 \section{Wstęp}
 
-|       Raport pełni funkcję podsumowującą dane dostepne w bazie sklepu Geeks and Dragons za pomocą wizualizacji i podstawowych statystyk. W dalszej części znajdują się rozwiązania nastepujących zagadnień i pytań:
+|       Niniejszy raport pełni funkcję podsumowującą dane dostepne w bazie sklepu Geeks and Dragons za pomocą wizualizacji i podstawowych statystyk. W dalszej części znajdują się rozwiązania nastepujących zagadnień i pytań:
 \begin{itemize}
   \item Ranking na pracownika miesiąca.
   \item Ranking zawodników turniejowych.
@@ -121,14 +121,14 @@ def query_to_df(sql):
   \item Czy ocena gry i cena wpływają na sprzedaż?
   \item Ile gier dostępne jest w sklepie?
 \end{itemize}
-Dodatkowo raport ma postać uniwersalną, co oznacza, że przy odświeżeniu dostosowuje się on do zmian w danych i prezentuje aktualne wykresy i wyniki. Ostatnia data kompilacji: `r I(py$today)`.
+Raport ma postać uniwersalną, co oznacza, że przy odświeżeniu dostosowuje się on do zmian w danych, prezentując aktualne wykresy i wyniki. Ostatnia data kompilacji: `r I(py$today)`.
 
 
 
 
 \section{Ranking na pracownika miesiąca}
 
-|       Ranking na pracownika miesiąca wyznaczony został na podstawie liczby sprzedanych przez pracownika egzemplarzy w danym miesiącu. Kwoty sprzedaży oraz wypożyczenia nie były brane pod uwagę. Poniżej możemy zobaczyć jak prezentował się ranking pracowników w każdym z ostatnich 6 miesięcy.
+|       Ranking na pracownika miesiąca wyznaczony został na podstawie liczby sprzedanych przez pracownika egzemplarzy w danym miesiącu. Kwoty sprzedaży oraz wypożyczenia nie były brane pod uwagę. Poniżej przedstawiony został ranking pracowników $\mbox{w każdym}$ z ostatnich 6 miesięcy.
 ```{python rating, fig.cap="\\label{fig:rating} Dzienna i miesięczna analiza sprzedaży gier.", fig.align="center", fig.width = 10, fig.height = 5, results = "hide"}
 sql = """SELECT MONTH(date) AS month,
         YEAR(date) AS year,
@@ -213,7 +213,7 @@ W ostatnim miesiącu pierwsze miejsce w rankingu zajął/zajęła `r I(py$last_w
 
 \section{Ranking zawodników turniejowych}
 
-|       Ranking zawodników turniejów organizowanych przez sklep wyznaczany jest na podstawie miejsc, które uczestnik zajął we wszystkich zawodach organizowanych do tej pory. Dla danego zawodnika brane są pod uwagę tylko miejsca na podium. 1. miejsce daje 3 punkty, 2. miejsce 2 punkty, natomiast 3. daje 1 punkt. Wynikiem, na bazie którego kształtuje się ranking, jest suma punktów uzyskanych ze wszystkich dotychczasowych turniejów.
+|       Ranking zawodników turniejów organizowanych przez sklep wyznaczono na podstawie miejsc, które uczestnik zajął we wszystkich zawodach organizowanych do tej pory. Dla danego zawodnika brane są pod uwagę tylko miejsca na podium. 1. miejsce daje 3 punkty, 2. miejsce - 2 punkty, natomiast 3.miejsce daje 1 punkt. Wynikiem, na bazie którego kształtuje się ranking, jest sumą punktów uzyskanych ze wszystkich dotychczasowych turniejów.
 
 ```{python}
 sql = """
@@ -252,7 +252,7 @@ df2 = df2.astype({"Punkty": int})
 
 \section{Które gry przynoszą największy dochód ze sprzedaży, a które z wypożyczeń?}
 
-|       Na podstawie sumarycznych przychodów ze sprzedaży każdej gry, zwizualizowaliśmy ich zmianę w czasie. Rozważany horyzont czasowy wynosi 3 miesiące.
+|       Na podstawie sumarycznych przychodów ze sprzedaży każdej gry zwizualizowano zmiany w czasie. Rozważany horyzont czasowy wynosi 3 miesiące.
 
 ```{python best_games_sales, fig.cap="\\label{fig:best_games_sales} Najbardziej dochodowe gry ze sprzedaży.", fig.align="center", fig.width = 14, fig.height = 10}
 
@@ -279,7 +279,7 @@ ax.legend()
 plt.show()
 ```
 
-Analogicznie postępujemy w przypadku wypożyczeń.
+Analogiczna analiza występuje w przypadku wypożyczeń.
 
 ```{python best_games_rent, fig.cap="\\label{fig:best_games_rent} Najbardziej dochodowe gry z wypożyczeń.", fig.align="center", fig.width = 14, fig.height = 10}
 
@@ -314,7 +314,7 @@ plt.show()
 
 \section{Które kategorie są najpopularniejsze?}
 
-|       Aby odpowiedzieć na to pytanie, zliczamy ile gier z danej kategorii sprzedało się od początku historii sklepu. Na tej podstawie tworzymy ranking kategorii, do której gry należące są najczęściej kupowane.
+|       W celu wyznaczenia najpopularniejszych kategorii gier, zliczana jest ilość sprzedanych gier z danej kategorii od początku historii sklepu. Na tej podstawie tworzony ranking kategorii, do których należą gry najczęściej kupowane.
 
 ```{python categories_sales, fig.cap="\\label{fig:categories sales} Zestawienie najlepiej sprzedających się kategorii gier.", fig.align="center", fig.width = 10, fig.height = 8}
 
@@ -353,7 +353,7 @@ ctgr_sale = best_categories(df4_sale)
 ctgr_sale
 ```
 
-To samo robimy, by wyznaczyć ranking najczęściej wypożyczanych gier, z tym że tutaj zliczamy wypożyczenia.
+W analogiczny sposób generowny jest ranking najczęściej wypożyczanych gier, z tym wyjątkiem, że zliczane są wypożyczenia.
 
 ```{python categories_rental, fig.cap="\\label{fig:categories_rental} Zestawienie najlepiej wypożyczających się kategorii gier.", fig.align="center", fig.width = 10, fig.height = 8}
 
@@ -373,7 +373,7 @@ ctgr_rent
 
 \section{Jak zmieniała się sprzedaż na przestrzeni lat?}
 
-|       W celu zobrazowania zmiany sprzedaży na przestrzeni lat prezentujemy wyniki w postaci wykresów. Przedstawiają one odpowiednio zmianę dziennego, oraz miesięcznego przychodu ze sprzedaży gier.
+|       W celu zobrazowania zmiany sprzedaży na przestrzeni lat prezentowane są wyniki w postaci wykresów. Przedstawiają one odpowiednio zmianę dziennego, oraz miesięcznego przychodu ze sprzedaży gier.
 
 ```{python sales, fig.cap="\\label{fig:sales} Dzienna i miesięczna analiza sprzedaży gier.", fig.align="center", fig.width = 8, fig.height = 5}
 
@@ -410,7 +410,7 @@ plt.show()
 
 \section{Czy ocena gry i cena wpływają na sprzedaż?}
 
-|       Aby ocenić zeleżność pomiędzy średnią oceną gry, a liczbą sprzedanych sztuk, możemy spojrzeć na wykres punktowy.
+|       W celu oceny zeleżności pomiędzy średnią oceną gry, a liczbą sprzedanych sztuk, można spojrzeć na wykres punktowy.
 
 ```{python rating_scatter, fig.cap="\\label{fig:rating_scatter} Wykres punktowy sprzedanych sztuk danej gry w zależności od jej średniej oceny.", fig.align="center", fig.width = 8, fig.height = 5}
 sql = """
@@ -435,10 +435,10 @@ plt.ylabel('Liczba sprzedanych sztuk')
 plt.show()
 ```
 
-Współczynnik korelacji Pearsona wyniósł `r I(py$cor_pearson)`, natomiast współczynnik Spearmana jest równy `r I(py$cor_spearman)`.
+Współczynnik korelacji Pearsona wyniosi `r I(py$cor_pearson)`, natomiast współczynnik Spearmana jest równy `r I(py$cor_spearman)`.
 
 
-Następnie dokładnie to samo wykonujemy dla ceny gry, aby ocenić, czy cena wpływa na sprzedaż.
+W celu oceny, czy cena wpływa na sprzedaż, wykonana jest analogiczna analiza dla ceny gry.
 
 ```{python price_scatter, fig.cap="\\label{fig:price_scatter} Wykres punktowy sprzedanych sztuk danej gry w zależności od jej ceny.", fig.align="center", fig.width = 8, fig.height = 5}
 cor_pearson = round(np.corrcoef(game_sale.price, game_sale.sale_count)[0, 1], 2)
@@ -451,13 +451,13 @@ plt.ylabel('Liczba sprzedanych sztuk')
 plt.show()
 ```
 
-Współczynnik korelacji Pearsona wyniósł `r I(py$cor_pearson)`, natomiast współczynnik Spearmana jest równy `r I(py$cor_spearman)`.
+Współczynnik korelacji Pearsona wynosi `r I(py$cor_pearson)`, natomiast współczynnik Spearmana jest równy `r I(py$cor_spearman)`.
 
 
 
 
 \section{Ile gier dostępne jest w sklepie?}
-|       Ostatnią rzeczą którą chcemy sprawdzić, jest podział gier na kategorie wiekowe i sprawdzenie liczności dla każdej z kategorii. Sugerowaliśmy się klasyfikacją gier PEGI, a kategorie są następujące:
+|       W tej części zaprezetowano posział gier na kategorie wiekowe i sprawdzenie liczności dla każdej z kategorii. Podział jest zgodny z klasyfikacją gier PEGI, a kategorie są następujące:
 
 \begin{itemize}
 \item \textbf{Dla każdego} - gry przeznaczone dla każdego
@@ -466,9 +466,9 @@ Współczynnik korelacji Pearsona wyniósł `r I(py$cor_pearson)`, natomiast wsp
 \item \textbf{16+} - gry dla osób od 16 lat
 \item \textbf{18+} - gry przeznaczone jedynie dla dorosłych.
 \end{itemize}
-Oczywiście każda kolejna kategoria nie zawiera się w poprzedniej, ani w następnej tzn. w kategorii gier \textbf{12+} nie ma gier z pozostałych kategorii wiekowych.
+Każda kolejna kategoria nie zawiera się w poprzedniej, ani w następnej tzn. w kategorii gier \textbf{12+} nie ma gier z pozostałych kategorii wiekowych.
 \newline
-Liczność każdej kategorii możemy zaobserwować na poniższym wykresie słupkowym.
+Liczność każdej kategorii można zaobserwować na poniższym wykresie słupkowym.
 ```{python age_bar, fig.cap="\\label{fig:age_bar} Ilość dostępnych gier w danych kategoriach wiekowych.", fig.align="center", fig.width = 10, fig.height = 5, results = "hide"}
 
 sql = """
