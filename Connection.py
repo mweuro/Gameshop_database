@@ -6,7 +6,6 @@ Następnie tabele te przesyła na bazę z wykorzystaniem biblioteki SQLAlchemy.
 
 from sqlalchemy import create_engine
 from sqlalchemy import Column, Integer, String, Float, Date
-from sqlalchemy.orm import sessionmaker, relationship
 from sqlalchemy.ext.declarative import declarative_base
 from urllib.parse import quote
 import pandas as pd
