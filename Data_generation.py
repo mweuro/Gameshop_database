@@ -1,19 +1,24 @@
+import json
 import matplotlib.pyplot as plt
-import pandas as pd
-import numpy as np
-import scipy.stats as sp
-from datetime import datetime, timedelta
-import random, string
-from unidecode import unidecode
 import math
+import numpy as np
+import pandas as pd
+import random, string
+import requests
+import re
+import scipy.stats as sp
+
+from bs4 import BeautifulSoup
+from calendar import monthrange
+from datetime import datetime, timedelta
+from dateutil.easter import *
 from random import randint
 from selenium import webdriver
 from selenium.webdriver.edge.service import Service
 from selenium.webdriver.edge.options import Options
-import json
-from bs4 import BeautifulSoup
-import requests
-import re
+from unidecode import unidecode
+
+
 
 
 
@@ -449,3 +454,213 @@ rent.insert(0, 'item_id', np.array([*range(len(rent))]) + 1)
 
 # Zapisanie tabeli
 rent.to_csv('../database/games_to_rent.csv', index = False)
+
+# =============================  ADAM  =================================
+
+def create_event(dict: dict, competition_id: int, staff_id: int, game_id: int, date, prize: int):
+    """
+    This function creates a competition event.
+    
+    Args:
+        dict: dictionary containing info about the event;
+        competition_id: unique key of the event;
+        staff_id: employee responsible for the event;
+        date: a specific time when the event occured;
+        prize: prize pool of the event.
+        
+    Returns:
+        dict: updated dictionary
+    """
+    
+    dict['competition_id'].append(competition_id)
+    dict['staff_id'].append(staff_id)
+    dict['game_id'].append(game_id)
+    dict['date'].append(date)
+    dict['prize'].append(prize)
+    
+    return dict
+
+def simulate_event(dict: dict, key_id, competition_id: int, Players = list):
+    """
+    This function simulates the results of a specific competition event.
+    
+    Args:
+        dict: dictionary containing info about the event's result.
+        competition_id: unique key of the event.
+        Players: customer_ids or team_ids list.
+        
+    Returns:
+        Scores: A dictionary saving places for each participant.
+    
+    """
+    Places = np.array( range(1, len(Players)+1) )
+    np.random.shuffle(Places) #inplace
+    
+    Scores = {player:place for (player, place) in zip(Players, Places)}
+    index = 1
+    
+    for player in Scores:
+        dict['competition_id'].append(competition_id)
+        dict['customer_id'].append(player)
+        dict['place'].append(Scores[player])
+        index += 1
+        key_id += 1
+    
+    return dict
+
+def get_fridays_in_a_month(year: int, month: int, max_days: int):
+    """
+    This function finds all fridays in a specific month.
+    
+    Args:
+        year: an integer specyfying the year.
+        month: an integer specyfying the month.
+        max_days: an intiger specyfying an index of the last day.
+        
+    Returns:
+        Fridays: a list of all fridays in the month.
+    """
+        
+    count = 1
+    Fridays = []
+
+    while 1:     
+        day = datetime.date(year, month, count) 
+
+        if day.weekday() == 4:
+            break
+
+        else:
+            count += 1
+
+    for day in range(count, max_days+1, 7):
+        Fridays.append( str(datetime.date(year, month, day)) )
+
+    return Fridays
+
+def get_fridays_in_a_year(year: int):
+    """
+    This function finds all fridays in a selected year.
+    
+    Args:
+        year: 
+        
+    Returns:
+        
+    """
+    
+    Months = np.array(range(1,13))
+    Days_in_month = {month:monthrange(year, month)[1] for month in Months}
+    
+    Fridays = []
+    for month, max_days in Days_in_month.items():
+        F = get_fridays_in_a_month(year, month, max_days)
+        
+        for friday in F:
+            Fridays.append(friday)
+            
+    return Fridays
+
+def get_days_for_competition(year: int, abort = True):
+    
+    if abort:
+        
+        Aborted = ["01-01", "01-06", "05-01", "05-03", "15-08",
+                   "11-01", "11-11", "12-24", "12-25", "12-26"]
+        
+        easter_friday = easter(year) + datetime.timedelta(days=-2)
+        Aborted.append( easter_friday )
+        
+    else:
+        
+        Aborted = []
+    
+    Dates = get_fridays_in_a_year(year)
+    To_abort = []
+    
+    for date in Dates:
+
+        if date[5:] in Aborted:
+            To_abort.append(date)
+            
+    for date in To_abort:
+        Dates.remove(date)
+    
+    return Dates
+
+def get_games(df, year : int):
+    
+    temp_df = df[df.year < year ]
+    top_df = temp_df.sort_values(by='avg_rating', ascending=False)
+    top_df.reset_index(drop=True, inplace=True)
+    
+    return top_df[["game_id", "names", "avg_rating", "min_players", "max_players"]]
+
+competition = {'competition_id': [],
+              'staff_id': [],
+              'game_id': [],
+              'date': [],
+              'prize': []}
+
+competition_results = {
+                       'competition_id': [],
+                      'customer_id': [],
+                      'place': []}
+
+number_of_active_players = 30
+
+Staff_ids = list(staff.staff_id)
+Customer_ids = np.random.choice(customer.customer_id, size = number_of_active_players)
+
+start_date = '2021-06-01'
+today_date = str(datetime.date.today())
+
+today_year = int(today_date[:4])
+Games = get_games(sale, today_year) 
+Prizes = list(range(100,500,50))
+
+Years = np.array(range(2021, today_year+1))
+Fridays = []
+
+for year in Years:
+    Fridays.extend(get_days_for_competition(year, abort=True))
+    
+Dates = [date for date in Fridays if date > start_date]
+
+index = 1
+for date in Dates:
+    
+    prize = np.random.choice( Prizes )
+    
+    game = np.random.choice(Games.game_id)
+    
+    staff = np.random.choice(Staff_ids)
+    competition = create_event(competition,
+                               index,
+                               staff,
+                               game,
+                               date,
+                               prize)
+    
+    if date <= today_date:
+        
+        min_participants = int(Games[Games.game_id == game].min_players)
+        max_participants = 3 * int(Games[Games.game_id == game].max_players)
+
+        no_participants = max([min_participants+1, int(random.random())*max_participants])
+        participants = np.random.choice(Customer_ids, size=no_participants)
+        
+        competition_results = simulate_event(competition_results, key_id, index, participants)
+        
+    index += 1
+
+Competition = pd.DataFrame(competition)
+Competition_results = pd.DataFrame(competition_results)
+
+result_id = list(range(1, len(Competition_results)+1))
+
+Competition_results["result_id"] = result_id
+Competition_results.set_index("result_id", inplace=True)
+
+Competition.to_csv('../database/competition.csv', index=False)
+Competition_results.to_csv('../database/competition_results.csv')
