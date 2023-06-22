@@ -132,7 +132,7 @@
 		\item \textbf{rent\textunderscore price} - cena za wypożyczenie (dzienna)
 	\end{itemize}
 	
-	\noindent Dane pochodzą z forum i sklepu internetowego \href{boardgamegeek.com}{boardgamegeek.com}, natomiast zostały one pobrane ze strony \href{https://www.kaggle.com/datasets/mrpantherson/board-game-data}{Kaggle}.
+	\noindent Dane pochodzą z forum i sklepu internetowego \href{https://boardgamegeek.com/}{boardgamegeek.com}, natomiast zostały one pobrane ze strony \href{https://www.kaggle.com/datasets/mrpantherson/board-game-data}{Kaggle}.
 	Główną zmianą w oryginalnym zbiorze danych było usunięcie kolumn z danymi, których nie planowaliśmy brać pod uwagę. Ponadto rozszerzyliśmy ją o trzy dodatowe informacje: opis gry (description), cenę (price), oraz koszt wypożyczenia (rent\textunderscore price). \\ \\
 	W celu wyciągnięcia informacji o cenie i opisie gry, zdecydowaliśmy się zbadać kod źródłowy każdej strony (kolumna bgg\textunderscore url z oryginalnej tabeli). Do tego zadania wykorzystaliśmy trzy bardzo istotne biblioteki: requests, BeautifulSoup, oraz Selenium, które dokładniej opisujemy w sekcji Technologie. Natomiast koszt wypożyczenia został wygenerowany następująco: grą których cena znajduje się w~określonym zakresie, przypisujemy odpowiednią cenę wypożyczenia:
 	
@@ -274,7 +274,7 @@
 		\item Raport.rmd
 	\end{enumerate}
 
-	Dodatkowo w folderze data znajduje się description_and_price.py, który posłużył do rozszerzenia danych z grami o ich opis oraz cenę. Skrypt pythonowy zawarty w pliku łączy się ze stroną ..., skąd ściąga opisy gier, a nastepnie po połączeniu ze stroną ..., sciąga ceny gier. Tak uzyskane dane program dołącza do zbioru gier. W folderze data znajduje się już zbiór zawierający te kolumny, wiec kompilowanie tego pliku nie jest wymagane.
+	Dodatkowo w folderze data znajduje się description\textunderscore and\textunderscore price.py, który posłużył do rozszerzenia danych z grami o ich opis oraz cenę. Skrypt pythonowy zawarty w pliku łączy się ze stroną internetową \href{https://boardgamegeek.com/}{boardgamegeek.com}, skąd ściąga opisy gier, a nastepnie ich ceny. Tak uzyskane dane program dołącza do zbioru gier. W~folderze data znajduje się już zbiór zawierający te kolumny, wiec kompilowanie tego pliku nie jest wymagane.
 	
 	\section{Baza w postaci EKNF}
 	W tej części dokumentacji zawarto listę zależności funkcyjnych dla każdej relacji oraz uzasadnienie, że baza jest w EKNF.
