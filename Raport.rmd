@@ -260,7 +260,7 @@ sql = """SELECT name, amount, date
 FROM games_for_sale
 JOIN sale
 USING (game_id)
-WHERE MONTH(date) >= 3 AND YEAR(date) = 2023"""
+WHERE MONTH(SYSDATE()) - MONTH(date) <= 3 AND YEAR(date) = YEAR(SYSDATE())"""
 
 df3_sale = query_to_df(sql)
 
@@ -289,7 +289,7 @@ JOIN games_for_sale
 USING (game_id)
 JOIN rental
 USING (item_id)
-WHERE MONTH(rental_date) >= 3 AND YEAR(rental_date) = 2023"""
+WHERE MONTH(SYSDATE()) - MONTH(rental_date) <= 3 AND YEAR(rental_date) = YEAR(SYSDATE())"""
 
 df3_rent = query_to_df(sql)
 
@@ -382,7 +382,9 @@ SELECT SUM(amount) as amount, date, YEAR(date) AS year, MONTH(date) AS month
 FROM games_for_sale
 JOIN sale
 USING (game_id)
-GROUP BY date"""
+WHERE (MONTH(DATE) != MONTH(SYSDATE())) OR (YEAR(DATE) != YEAR(SYSDATE()))
+GROUP BY date
+"""
 df5 = query_to_df(sql)
 df5 = df5.set_index('date')
 
@@ -390,7 +392,9 @@ sql2 = """SELECT SUM(amount) as amount, date, YEAR(date) AS year, MONTH(date) AS
 FROM games_for_sale
 JOIN sale
 USING (game_id)
-GROUP BY year, month"""
+WHERE (MONTH(DATE) != MONTH(SYSDATE())) OR (YEAR(DATE) != YEAR(SYSDATE()))
+GROUP BY year, month
+"""
 df5_month = query_to_df(sql2)
 df5_month = df5_month.set_index('date')
 
