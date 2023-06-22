@@ -129,7 +129,81 @@ Dodatkowo raport ma postać uniwersalną, co oznacza, że przy odświeżeniu dos
 \section{Ranking na pracownika miesiąca}
 
 |       Ranking na pracownika miesiąca wyznaczony został na podstawie liczby sprzedanych przez pracownika egzemplarzy w danym miesiącu. Kwoty sprzedaży oraz wypożyczenia nie były brane pod uwagę. Poniżej możemy zobaczyć jak prezentował się ranking pracowników w każdym z ostatnich 6 miesięcy.
+```{python rating, fig.cap="\\label{fig:rating} Dzienna i miesięczna analiza sprzedaży gier.", fig.align="center", fig.width = 10, fig.height = 5, results = "hide"}
+sql = """SELECT MONTH(date) AS month,
+        YEAR(date) AS year,
+        CONCAT(first_name, ' ', last_name) AS full_name,
+        COUNT(*) AS count
+FROM sale
+JOIN staff
+USING (staff_id)
+GROUP BY year, month, full_name
+"""
+df = query_to_df(sql)
 
+
+def month_ranking_example(df, year = 2023, month = 5):
+    df = df[df.month == month][df.year == year][:5].sort_values(by = 'count', ascending = True)
+    return df
+  
+  
+df1 = month_ranking_example(df, year = 2023, month = 5)
+df2 = month_ranking_example(df, year = 2023, month = 4)
+df3 = month_ranking_example(df, year = 2023, month = 3)
+df4 = month_ranking_example(df, year = 2023, month = 2)
+df5 = month_ranking_example(df, year = 2023, month = 1)
+df6 = month_ranking_example(df, year = 2022, month = 12)
+
+
+month_names = {1 : 'Styczeń',
+                  2 : 'Luty',
+                  3 : 'Marzec',
+                  4 : 'Kwiecień',
+                  5 : 'Maj',
+                  6 : 'Czerwiec',
+                  7 : 'Lipiec',
+                  8 : 'Sierpień',
+                  9 : 'Wrzesień', 
+                  10 : 'Październik',
+                  11 : 'Listopad', 
+                  12 : 'Grudzień'}
+
+plt.style.use('bmh')
+fig, ax = plt.subplots(3, 2, figsize = (15, 10))
+ax[0, 0].barh(df1['full_name'], df1['count'], color = ['skyblue', 'skyblue', 'sienna', 'silver', 'goldenrod'])
+ax[1, 0].barh(df2['full_name'], df2['count'], color = ['skyblue', 'skyblue', 'sienna', 'silver', 'goldenrod'])
+ax[2, 0].barh(df3['full_name'], df3['count'], color = ['skyblue', 'skyblue', 'sienna', 'silver', 'goldenrod'])
+ax[0, 1].barh(df4['full_name'], df4['count'], color = ['skyblue', 'skyblue', 'sienna', 'silver', 'goldenrod'])
+ax[1, 1].barh(df5['full_name'], df5['count'], color = ['skyblue', 'skyblue', 'sienna', 'silver', 'goldenrod'])
+ax[2, 1].barh(df6['full_name'], df6['count'], color = ['skyblue', 'skyblue', 'sienna', 'silver', 'goldenrod'])
+
+ax[0, 0].bar_label(ax[0, 0].containers[0], fmt= '%i', label_type='edge')
+ax[0, 0].tick_params(axis='y', direction='in',pad=-15)
+ax[0, 0].set_yticklabels(df6['full_name'], horizontalalignment = "left")
+ax[1, 0].bar_label(ax[1, 0].containers[0], fmt= '%i', label_type='edge')
+ax[1, 0].tick_params(axis='y', direction='in',pad=-15)
+ax[1, 0].set_yticklabels(df6['full_name'], horizontalalignment = "left")
+ax[2, 0].bar_label(ax[2, 0].containers[0], fmt= '%i', label_type='edge')
+ax[2, 0].tick_params(axis='y', direction='in',pad=-15)
+ax[2, 0].set_yticklabels(df6['full_name'], horizontalalignment = "left")
+ax[0, 1].bar_label(ax[0, 1].containers[0], fmt= '%i', label_type='edge')
+ax[0, 1].tick_params(axis='y', direction='in',pad=-15)
+ax[0, 1].set_yticklabels(df6['full_name'], horizontalalignment = "left")
+ax[1, 1].bar_label(ax[1, 1].containers[0], fmt= '%i', label_type='edge')
+ax[1, 1].tick_params(axis='y', direction='in',pad=-15)
+ax[1, 1].set_yticklabels(df6['full_name'], horizontalalignment = "left")
+ax[2, 1].bar_label(ax[2, 1].containers[0], fmt= '%i', label_type='edge')
+ax[2, 1].tick_params(axis='y', direction='in',pad=-15)
+ax[2, 1].set_yticklabels(df6['full_name'], horizontalalignment = "left")
+
+ax[0, 0].set_title(month_names[df1.month.values[0]] + ' ' + str(df1.year.values[0]), size = 10)
+ax[1, 0].set_title(month_names[df2.month.values[0]] + ' ' + str(df2.year.values[0]), size = 10)
+ax[2, 0].set_title(month_names[df3.month.values[0]] + ' ' + str(df3.year.values[0]), size = 10)
+ax[0, 1].set_title(month_names[df4.month.values[0]] + ' ' + str(df4.year.values[0]), size = 10)
+ax[1, 1].set_title(month_names[df5.month.values[0]] + ' ' + str(df5.year.values[0]), size = 10)
+ax[2, 1].set_title(month_names[df6.month.values[0]] + ' ' + str(df6.year.values[0]), size = 10)
+plt.show()
+```
 W ostatnim miesiącu pierwsze miejsce w rankingu zajął/zajęła ...
 
 
