@@ -61,7 +61,14 @@ competition_results = Table('competition_results', metadata, autoload_with = eng
 connection = engine.connect()
 ```
 
+```{python}
+# Przydatne funkcje
 
+def query_to_df(sql):
+    result = connection.execute(text(sql))
+    df = pd.DataFrame(result.fetchall(), columns=result.keys())
+    return df
+```
 
 
 
@@ -137,20 +144,120 @@ W ostatnim miesiącu pierwsze miejsce w rankingu zajął/zajęła ...
 
 \section{Które gry przynoszą największy dochód ze sprzedaży, a które z wypożyczeń?}
 
-|       Na podstawie sumarycznych dochodów ze sprzedaży jakie wygenerowała każda gra w ostatnim miesiącu, został wyznaczony ranking najbardziej dochodowych gier.
+|       Na podstawie dziennych sumarycznych dochodów ze sprzedaży jakie wygenerowała każda gra, został wyznaczony ranking najbardziej dochodowych gier.
+
+```{python best_games_sales, fig.cap="\\label{fig:best_games_sales} Najbardziej dochodowe gry ze sprzedaży.", fig.align="center", fig.width = 14, fig.height = 10}
+
+sql = """SELECT name, amount, date
+FROM games_for_sale
+JOIN sale
+USING (game_id)"""
+
+df3_sale = query_to_df(sql)
+
+best5 = df3_sale.groupby('name').sum().sort_values(by = 'amount', ascending = False)[:5]
+best5_timelapse = df3_sale[df3_sale.name.isin(best5.index) == True]
+best5_timelapse = best5_timelapse.groupby(['name', 'date']).sum()
+
+plt.style.use('bmh')
+fig, ax = plt.subplots(figsize = (20, 7))
+for game in best5.index:
+    subgame = best5_timelapse.xs(game, level = 'name').cumsum()
+    ax.step(subgame.index, subgame.amount, label = game)
+ax.set_xlabel('Data')
+ax.set_ylabel('Przychód')
+ax.legend()
+plt.show()
+```
 
 Podobnie tworzymy ranking dla dochodów z wypożyczeń.
 
+```{python best_games_rent, fig.cap="\\label{fig:best_games_rent} Najbardziej dochodowe gry z wypożyczeń.", fig.align="center", fig.width = 14, fig.height = 10}
 
+sql = """SELECT name, rent_price, rental_date, return_date
+FROM games_to_rent
+JOIN games_for_sale
+USING (game_id)
+JOIN rental
+USING (item_id)"""
+
+df3_rent = query_to_df(sql)
+
+df3_rent['days'] = (df3_rent['return_date'] - df3_rent['rental_date']).dt.days
+df3_rent['income'] = df3_rent['rent_price']*df3_rent['days']
+df3_rent = df3_rent.drop(['rent_price', 'rental_date', 'days'], axis = 1)
+best5_rent = df3_rent.groupby('name').sum().sort_values(by = 'income', ascending = False)[:5]
+best5_rent_timelapse = df3_rent[df3_rent.name.isin(best5_rent.index) == True]
+best5_rent_timelapse = best5_rent_timelapse.groupby(['name', 'return_date']).sum()
+
+plt.style.use('bmh')
+fig, ax = plt.subplots(figsize = (20, 7))
+for game in best5_rent.index:
+    subgame = best5_rent_timelapse.xs(game, level = 'name').cumsum()
+    ax.step(subgame.index, subgame.income, label = game)
+ax.set_xlabel('Data')
+ax.set_ylabel('Przychód')
+ax.legend()
+plt.show()
+```
 
 
 \section{Które kategorie są najpopularniejsze?}
 
 |       Aby odpowiedzić na to pytanie, zliczamy ile gier z danej kategorii sprzedało się od początku historii sklepu. Na tej podstawie tworzymy ranking kategorii, do której gry należące są najczęściej kupowane.
 
-To samo robimy, by wyznaczyć ranking najczęsciej wypożyczanych gier, z tym że tutaj zliczamy wypożyczenia.
+```{python categories_sales, fig.cap="\\label{fig:categories sales} Zestawienie najlepiej sprzedających się kategorii gier.", fig.align="center", fig.width = 10, fig.height = 8}
 
+def best_categories(df):
+    categories = df.category.values
+    splitted = []
+    for category in categories:
+        category_split = category.split(', ')
+        for indice in category_split:
+            splitted.append(indice)
+    splitted = np.array(splitted)
+    splitted_series = pd.DataFrame(splitted)
+    splitted_series.columns = ['Category']
+    
+    popularity = splitted_series.value_counts().reset_index()
+    popularity.columns = ['Category', 'Count']
+    first10 = popularity[:10]
+    
+    plt.style.use('bmh')
+    fig, ax = plt.subplots(figsize = (11, 7))
+    ax.bar(first10['Category'], first10['Count'], color = 'skyblue')
+    ax.set_xticklabels(first10['Category'], rotation = 45)
+    ax.set_ylabel('Number of games')
+    plt.show()
+    
+    
+    
+    
+sql = """SELECT category 
+FROM games_for_sale 
+JOIN sale 
+USING (game_id)"""
 
+df4_sale = query_to_df(sql)
+ctgr_sale = best_categories(df4_sale)
+ctgr_sale
+```
+
+To samo robimy, by wyznaczyć ranking najczęściej wypożyczanych gier, z tym że tutaj zliczamy wypożyczenia.
+
+```{python categories_rental, fig.cap="\\label{fig:categories_rental} Zestawienie najlepiej wypożyczających się kategorii gier.", fig.align="center", fig.width = 10, fig.height = 8}
+
+sql = """SELECT category
+FROM games_for_sale
+JOIN games_to_rent
+USING (game_id)
+JOIN rental
+USING (item_id)"""
+
+df4_rent = query_to_df(sql)
+ctgr_rent = best_categories(df4_rent)
+ctgr_rent
+```
 
 
 \section{Jak zmieniała się sprzedaż na przestrzeni lat?}
@@ -209,7 +316,45 @@ Współczynnik korelacji Pearsona wyniósł `r I(py$cor_pearson)`, natomiast wsp
 
 
 \section{Ile gier dostępne jest w sklepie?}
+Ostatnią rzeczą którą chcemy sprawdzić, jest podział gier na kategorie wiekowe i sprawdzenie liczności dla każdej z kategorii. Sugerowaliśmy się klasyfikacją gier PEGI, a kategorie są następujące:
 
+\begin{itemize}
+\item \textbf{Everyone} - gry przeznaczone dla każdego
+\item \textbf{6+} - gry dla osób od 6 lat
+\item \textbf{12+} - gry dla osób od 12 lat
+\item \textbf{16+} - gry dla osób od 16 lat
+\item \textbf{18+} - gry przeznaczone jedynie dla dorosłych.
+\end{itemize}
+Oczywiście każda kolejna kategoria nie zawiera się w poprzedniej, ani w następnej tzn. w kategorii gier \textbf{12+} nie ma gier z pozostałych kategorii wiekowych.
+\newline
+Liczność każdej kategorii możemy zaobserwować na poniższym wykresie słupkowym.
+```{python age_bar, fig.cap="\\label{fig:age_bar} Ilość dostępnych gier w danych kategoriach wiekowych.", fig.align="center", fig.width = 10, fig.height = 5, results = "hide"}
+
+sql = """
+SELECT age, SUM(availability) AS availability
+FROM games_for_sale
+GROUP BY age
+"""
+df6 = query_to_df(sql)
+df6 = df6.set_index('age')
+
+pegi = pd.DataFrame(index = ['Everyone', '6+', '12+', '16+', '18+'],
+                    data = [sum(df6[df6.index < 6].values),
+                     sum(df6.loc[(df6.index >= 6) & (df6.index < 12)].values),
+                     sum(df6.loc[(df6.index >= 12) & (df6.index < 16)].values),
+                     sum(df6.loc[(df6.index >= 16) & (df6.index < 18)].values),
+                     sum(df6[df6.index >= 18].values)],
+                   columns = ['Number of games'])
+
+              
+plt.style.use('bmh')
+fig, ax = plt.subplots(figsize = (12, 6))
+ax.bar(pegi.index, pegi['Number of games'], color = ['lightgreen', 'lightgreen', 'gold', 'gold' , 'orangered'])
+ax.set_xticklabels(pegi.index)
+ax.set_ylabel('Number of games')
+ax.bar_label(ax.containers[0], fmt= '%i', label_type='edge')
+plt.show()
+```
 
 
 
