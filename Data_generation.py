@@ -1,5 +1,4 @@
 import json
-import matplotlib.pyplot as plt
 import math
 import numpy as np
 import pandas as pd
@@ -193,7 +192,7 @@ phone = phone_number(n)
 customer["email"] = email
 customer["phone"] = phone
 
-customer.to_csv('../database/customer.csv', index=False)
+customer.to_csv('database/customer.csv', index=False)
 
 
 
@@ -224,7 +223,7 @@ amount = [4310, 5140, 6530, 7280, 8320] # gross prices
 salary = np.random.choice(amount, size=n, replace=True, p=[0.35, 0.30, 0.15, 0.10, 0.1]). astype(float)
 staff["salary"] = salary 
 
-staff.to_csv('../database/staff.csv', index=False)
+staff.to_csv('database/staff.csv', index=False)
 
 
 
@@ -240,81 +239,8 @@ staff.to_csv('../database/staff.csv', index=False)
 
 # TABELA GAMES_FOR_SALE
 
-# Wczytanie oryginalnej tabeli
+# Wczytanie tabeli boardgames2
 sale = pd.read_csv('data/boardgames.csv')
-
-
-# Dodanie kolumny 'description'
-def find_description(df = sale):
-    """
-    A function finds a description for each game in the dataset and applies it to a dataframe. 
-    
-    Args:
-        df : sale dataframe
-        
-    Returns:
-        df: updated dataframe
-    """
-    url_list = df.bgg_url.values
-    descriptions = []
-    for url in url_list:
-        response = requests.get(url)
-        response.raise_for_status()
-        html_content = response.text
-        soup = BeautifulSoup(html_content, 'html.parser')
-        script_element = soup.find('script', type='application/ld+json').string
-        data = json.loads(script_element)
-        description = data.get('description')
-        descriptions.append(description)
-    df.insert(4, 'description', descriptions)
-    return df
-
-sale = find_description()
-
-
-# Dodanie kolumny 'price'
-# UWAGA - ten krok długo się wykonuje
-def find_price(df = sale):
-    """
-    A function finds a price for each game in the dataset and applies it to a dataframe. 
-    
-    Args:
-        df : sale dataframe
-        
-    Returns:
-        df_copy: updated dataframe
-    """
-    url_list = df.bgg_url.values
-    prices = np.zeros(len(url_list))
-    
-    driver_path = 'msedgedriver.exe'
-    options = Options()
-    options.add_argument('--headless')
-    service = Service(driver_path)
-    for i in range(len(url_list)):
-        driver = webdriver.Edge(service=service, options=options)
-        driver.get(url_list[i])
-        html = driver.page_source
-        driver.quit()
-        soup = BeautifulSoup(html, 'html.parser')
-        try:
-            price_block = soup.find('li', class_ = 'summary-item summary-sale-item ng-scope')
-            price = price_block.find('strong', class_ = 'ng-binding').string.replace(',', '.')
-            price = float(re.findall(r"\d+\.\d+", price)[0])
-        except:
-            try:
-                price_block = soup.find_all('li', class_ = 'summary-item summary-sale-item ng-scope')[1]
-                price = price_block.find('strong', class_ = 'ng-binding').string.replace(',', '.')
-                price = float(re.findall(r"\d+\.\d+", price)[0])
-            except:
-                price = None
-        prices[i] = price
-    df_copy = df.copy()
-    df_copy['price'] = prices
-    return df_copy
-
-sale = find_price()
-
 
 # Dodanie kolumny 'rent_price'
 price = sale.price.values
@@ -343,7 +269,7 @@ sale = sale[['game_id', 'names', 'description',
 sale.rename(columns = {'names' : 'name', 'owned' : 'availability'}, inplace = True)
 
 # Zapisanie tabeli
-sale.to_csv('../database/games_for_sale.csv', index = False)
+sale.to_csv('database/games_for_sale.csv', index = False)
 
 
 
@@ -376,7 +302,7 @@ rent = rent.loc[rent.index.repeat(games_count())].reset_index(drop = True)
 rent.insert(0, 'item_id', np.array([*range(len(rent))]) + 1)
 
 # Zapisanie tabeli
-rent.to_csv('../database/games_to_rent.csv', index = False)
+rent.to_csv('database/games_to_rent.csv', index = False)
 
 
 
@@ -387,10 +313,10 @@ rent.to_csv('../database/games_to_rent.csv', index = False)
 
 # =============================  SZYMON  =================================
 
-customer_df = pd.read_csv('../database/customer.csv', index_col='customer_id')
-staff_df = pd.read_csv('../database/staff.csv', index_col='staff_id')
-games_df = pd.read_csv('../database/games_for_sale.csv', index_col='game_id')
-items_df = pd.read_csv('../database/games_to_rent.csv', index_col='item_id')
+customer_df = pd.read_csv('database/customer.csv', index_col='customer_id')
+staff_df = pd.read_csv('database/staff.csv', index_col='staff_id')
+games_df = pd.read_csv('database/games_for_sale.csv', index_col='game_id')
+items_df = pd.read_csv('database/games_to_rent.csv', index_col='item_id')
 
 dates_df = pd.read_csv('data/dates.csv')
 dates = np.array(dates_df.date)
@@ -437,7 +363,7 @@ nulls['null'] = sp.binom.rvs(1, 0.17, size=size)
 null_ind = nulls[nulls.null == 0].index
 sale.customer_id.iloc[null_ind] = pd.NA
 
-sale.to_csv('../database/sale.csv')
+sale.to_csv('database/sale.csv')
 
 
 
@@ -474,7 +400,7 @@ rental = rental.sort_values('rental_date')
 rental['rental_id'] = list(range(1, size + 1))
 rental = rental.set_index('rental_id')
 
-rental.to_csv('../database/rental.csv')
+rental.to_csv('database/rental.csv')
 
 
 
@@ -690,5 +616,5 @@ result_id = list(range(1, len(Competition_results)+1))
 Competition_results["result_id"] = result_id
 Competition_results.set_index("result_id", inplace=True)
 
-Competition.to_csv('../database/competition.csv', index=False)
-Competition_results.to_csv('../database/competition_results.csv')
+Competition.to_csv('database/competition.csv', index=False)
+Competition_results.to_csv('database/competition_results.csv')

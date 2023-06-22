@@ -86,8 +86,8 @@ def query_to_df(sql):
 \begin{center}
 \author{
   Szymon Malec, 262276 \\
-  Adam Wrzesiński, 262317\\
   Michał Wiktorowski, 262330 \\
+  Adam Wrzesiński, 262317\\
   Weronika Zmyślona, 262284 \\
   \vspace{0.5cm}
   Politechnika Wrocławska \\
@@ -241,10 +241,12 @@ for key, value in replace_dict.items():
     places[places == key] = value
 df2['place'] = places
 
-df2 = df2[df2.place <= 10]
-df2
+df2 = df2[df2.place <= 10].reset_index()
+df2.columns = ['Imię i nazwisko', 'Punkty', 'Miejsce']
+df2 = df2.astype({"Punkty": int})
 ```
-
+\newpage
+`r knitr::kable(py$df2)`
 
 
 
