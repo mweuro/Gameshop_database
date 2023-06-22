@@ -334,16 +334,23 @@ rental.to_csv('../database/rental.csv')
 # =============================  MICHAŁ  =================================
 
 
-# Tabela GAMES_FOR_SALE
-
+# TABELA GAMES_FOR_SALE
 
 # Wczytanie oryginalnej tabeli
 sale = pd.read_csv('data/boardgames.csv')
 
 
 # Dodanie kolumny 'description'
-"""Finds a description for each game in the dataset. Applies it to a dataframe."""
-def find_description(df):
+def find_description(df = sale):
+    """
+    A function finds a description for each game in the dataset and applies it to a dataframe. 
+    
+    Args:
+        df : sale dataframe
+        
+    Returns:
+        df: updated dataframe
+    """
     url_list = df.bgg_url.values
     descriptions = []
     for url in url_list:
@@ -358,13 +365,21 @@ def find_description(df):
     df.insert(4, 'description', descriptions)
     return df
 
-sale = find_description(sale)
+sale = find_description()
 
 
 # Dodanie kolumny 'price'
 # UWAGA - ten krok długo się wykonuje
-"""Finds a price for each game in the dataset. Applies it to a dataframe."""
-def find_price(df):
+def find_price(df = sale):
+    """
+    A function finds a price for each game in the dataset and applies it to a dataframe. 
+    
+    Args:
+        df : sale dataframe
+        
+    Returns:
+        df_copy: updated dataframe
+    """
     url_list = df.bgg_url.values
     prices = np.zeros(len(url_list))
     
@@ -394,7 +409,7 @@ def find_price(df):
     df_copy['price'] = prices
     return df_copy
 
-sale = find_price(sale)
+sale = find_price()
 
 
 # Dodanie kolumny 'rent_price'
@@ -415,33 +430,36 @@ for price in price:
 
 sale['rent_price'] = rent_price
 
-
 # Usunięcie zbędnych kolumn
 sale = sale[['game_id', 'names', 'description', 
          'min_players', 'max_players', 'avg_time', 
          'avg_rating', 'age', 'owned', 'category', 'price', 'rent_price']]
 
-
-
 # Zmiana nazw kolumn
 sale.rename(columns = {'names' : 'name', 'owned' : 'availability'}, inplace = True)
-
 
 # Zapisanie tabeli
 sale.to_csv('../database/games_for_sale.csv', index = False)
 
 
 
-# Tabela GAMES_TO_RENT
-
+# TABELA GAMES_TO_RENT
 
 # Wybranie potrzebnych kolumn z tabeli sale
 rent = sale[['game_id']]
 
 
 # Losowe generowanie ilości egzemplarzy
-"""Generates list of random integers (from 0 to 10), with advantage of zeros."""
 def games_count(n = np.shape(rent)[0]):
+    """
+    A function generates list of random integers (from 0 to 10), with advantage of zeros.
+    
+    Args:
+        n : number of rent dataframe's rows
+        
+    Returns:
+        b: list of random integers
+    """
     a = [randint(0, 10) for i in range(n)]
     b = [0 if randint(0, len(a)) < 500 else i for i in a]
     return b
@@ -451,9 +469,16 @@ def games_count(n = np.shape(rent)[0]):
 rent = rent.loc[rent.index.repeat(games_count())].reset_index(drop = True)
 rent.insert(0, 'item_id', np.array([*range(len(rent))]) + 1)
 
-
 # Zapisanie tabeli
 rent.to_csv('../database/games_to_rent.csv', index = False)
+
+
+
+
+
+
+
+
 
 # =============================  ADAM  =================================
 
