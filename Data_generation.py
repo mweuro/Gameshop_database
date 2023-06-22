@@ -434,7 +434,7 @@ def create_event(dict: dict, competition_id: int, staff_id: int, game_id: int, d
     
     return dict
 
-def simulate_event(dict: dict, key_id, competition_id: int, Players = list):
+def simulate_event(dict: dict, competition_id: int, Players = list):
     """
     This function simulates the results of a specific competition event.
     
@@ -454,11 +454,11 @@ def simulate_event(dict: dict, key_id, competition_id: int, Players = list):
     index = 1
     
     for player in Scores:
+        dict['result_id'].append(index)
         dict['competition_id'].append(competition_id)
         dict['customer_id'].append(player)
         dict['place'].append(Scores[player])
         index += 1
-        key_id += 1
     
     return dict
 
@@ -497,10 +497,10 @@ def get_fridays_in_a_year(year: int):
     This function finds all fridays in a selected year.
     
     Args:
-        year: 
+        year: selected year
         
     Returns:
-        
+        Fridays: List of all appriopriate friday dates.
     """
     
     Months = np.array(range(1,13))
@@ -516,6 +516,16 @@ def get_fridays_in_a_year(year: int):
     return Fridays
 
 def get_days_for_competition(year: int, abort = True):
+    """
+    Finds all suitable dates for competitions. Functino assumes that events take place at fridays.
+
+    Args:
+        year: selected year,
+        abort: True if events cannot be organised on work-free days.
+
+    Returns:
+        Dates: A list of the suitable dates.
+    """
     
     if abort:
         
@@ -542,13 +552,21 @@ def get_days_for_competition(year: int, abort = True):
     
     return Dates
 
-def get_games(df, year : int):
+def get_games(df):
+    """
+    Sorts games by their rating.
+
+    Args:
+        df: A dataframe containing info about games.
+
+    Returns:
+        top_df: A subset which includes all the necessary information about desired dataframe.
+    """
     
-    temp_df = df[df.year < year ]
-    top_df = temp_df.sort_values(by='avg_rating', ascending=False)
+    top_df = df.sort_values(by='avg_rating', ascending=False)
     top_df.reset_index(drop=True, inplace=True)
     
-    return top_df[["game_id", "names", "avg_rating", "min_players", "max_players"]]
+    return top_df[["game_id", "name", "avg_rating", "min_players", "max_players"]]
 
 competition = {'competition_id': [],
               'staff_id': [],
@@ -556,7 +574,7 @@ competition = {'competition_id': [],
               'date': [],
               'prize': []}
 
-competition_results = {
+competition_results = {'result_id': [],
                        'competition_id': [],
                       'customer_id': [],
                       'place': []}
@@ -570,7 +588,7 @@ start_date = '2021-06-01'
 today_date = str(datetime.date.today())
 
 today_year = int(today_date[:4])
-Games = get_games(sale, today_year) 
+Games = get_games(games_for_sale) 
 Prizes = list(range(100,500,50))
 
 Years = np.array(range(2021, today_year+1))
@@ -604,17 +622,16 @@ for date in Dates:
         no_participants = max([min_participants+1, int(random.random())*max_participants])
         participants = np.random.choice(Customer_ids, size=no_participants)
         
-        competition_results = simulate_event(competition_results, key_id, index, participants)
+        competition_results = simulate_event(competition_results, index, participants)
         
     index += 1
 
 Competition = pd.DataFrame(competition)
 Competition_results = pd.DataFrame(competition_results)
 
-result_id = list(range(1, len(Competition_results)+1))
-
-Competition_results["result_id"] = result_id
-Competition_results.set_index("result_id", inplace=True)
+Competition_results = Competition_results.iloc[:,1:]
+Competition_results["result_id"] = list(range(1, len(Competition_results)+1))
+Competition_results.set_index("result_id")
 
 Competition.to_csv('database/competition.csv', index=False)
-Competition_results.to_csv('database/competition_results.csv')
+Competition_results.to_csv('database/competition_results.csv', index=False)
